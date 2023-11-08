@@ -13,8 +13,11 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText emailEditText;
     private EditText phoneEditText;
     private EditText addressEditText;
+    private EditText zipCodeEditText;
+    private EditText cityEditText;
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
+
     private Button registerButton;
 
     @Override
@@ -28,6 +31,8 @@ public class RegistrationActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         addressEditText = findViewById(R.id.addressEditText);
+        zipCodeEditText = findViewById(R.id.zipCodeEditText);
+        cityEditText = findViewById(R.id.cityEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         registerButton = findViewById(R.id.registerButton);
@@ -48,6 +53,8 @@ public class RegistrationActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
+        String zipCode = zipCodeEditText.getText().toString();
+        String city = cityEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String confirmPassword = confirmPasswordEditText.getText().toString();
 
