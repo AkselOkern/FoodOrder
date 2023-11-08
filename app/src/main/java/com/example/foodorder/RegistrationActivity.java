@@ -3,21 +3,22 @@ package com.example.foodorder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText firstNameEditText;
-    private EditText lastNameEditText;
-    private EditText emailEditText;
-    private EditText phoneEditText;
-    private EditText addressEditText;
-    private EditText zipCodeEditText;
-    private EditText cityEditText;
-    private EditText passwordEditText;
-    private EditText confirmPasswordEditText;
-
+    private TextInputEditText firstNameEditText;
+    private TextInputEditText lastNameEditText;
+    private TextInputEditText emailEditText;
+    private TextInputEditText phoneEditText;
+    private TextInputEditText addressEditText;
+    private TextInputEditText passwordEditText;
+    private TextInputEditText confirmPasswordEditText;
+    private TextInputEditText zipCodeEditText;
+    private TextInputEditText cityEditText;
     private Button registerButton;
 
     @Override
@@ -31,10 +32,10 @@ public class RegistrationActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         phoneEditText = findViewById(R.id.phoneEditText);
         addressEditText = findViewById(R.id.addressEditText);
-        zipCodeEditText = findViewById(R.id.zipCodeEditText);
-        cityEditText = findViewById(R.id.cityEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
+        zipCodeEditText = findViewById(R.id.zipCodeEditText);
+        cityEditText = findViewById(R.id.cityEditText);
         registerButton = findViewById(R.id.registerButton);
 
         // Set click listener for the Register button
@@ -53,19 +54,21 @@ public class RegistrationActivity extends AppCompatActivity {
         String email = emailEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
-        String zipCode = zipCodeEditText.getText().toString();
-        String city = cityEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String confirmPassword = confirmPasswordEditText.getText().toString();
+        String zipCode = zipCodeEditText.getText().toString();
+        String city = cityEditText.getText().toString();
 
         // Check if passwords match
         if (password.equals(confirmPassword)) {
             // Passwords match, proceed with registration
-            // Uncomment and implement Firebase registration here
-            // Example: FirebaseAuthentication.registerUser(email, password);
+            // Implement your registration logic, e.g., with Firebase
         } else {
-            // Passwords don't match, show an error message
-            confirmPasswordEditText.setError("Passwords do not match");
+            // Passwords don't match, show an error message in a Snackbar
+            View view = findViewById(android.R.id.content); // Use the root view of your activity
+
+            Snackbar snackbar = Snackbar.make(view, "Passwords do not match", Snackbar.LENGTH_LONG);
+            snackbar.show();
         }
     }
 }
