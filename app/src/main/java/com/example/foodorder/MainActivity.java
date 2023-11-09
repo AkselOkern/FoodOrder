@@ -1,9 +1,5 @@
 package com.example.foodorder;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,25 +16,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize UI elements
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
 
+        // Set click listener for the Log In button
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // Handle the Login button click. You can open a login activity or perform login logic here.
-            }
-        });
-
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Handle the Register button click by starting the RegistrationActivity
-                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class); // Replace CurrentActivity with the name of your current activity
+            public void onClick(View v) {
+                // Navigate to the Login Activity
+                Intent intent = new Intent(MainActivity.this, Login.class);
                 startActivity(intent);
             }
         });
 
+        // Set click listener for the Register button
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to the Registration Activity
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
+
 
