@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="First Name"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/firstNameEditText"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Last Name"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lastNameEditText"
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Phone"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneEditText"
@@ -81,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Address"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addressEditText"
@@ -97,7 +97,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Create Password"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
@@ -113,7 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Confirm Password"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/confirmPasswordEditText"
@@ -129,7 +129,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Zip Code"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/zipCodeEditText"
@@ -145,7 +145,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="City"
-        android:textColorHint="#FFFFFF">
+        android:textColorHint="#000000">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/cityEditText"
@@ -158,9 +158,9 @@
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:backgroundTint="#FFA500"
-        android:textColor="#FFFFFF"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#F79808"
+        android:text="Register"
+        android:textColor="#000000" />
 </LinearLayout>

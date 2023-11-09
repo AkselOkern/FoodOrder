@@ -1,12 +1,24 @@
 package com.example.foodorder;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -55,20 +67,70 @@ public class RegistrationActivity extends AppCompatActivity {
         String phone = phoneEditText.getText().toString();
         String address = addressEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-        String confirmPassword = confirmPasswordEditText.getText().toString();
         String zipCode = zipCodeEditText.getText().toString();
         String city = cityEditText.getText().toString();
 
-        // Check if passwords match
-        if (password.equals(confirmPassword)) {
-            // Passwords match, proceed with registration
-            // Implement your registration logic, e.g., with Firebase
-        } else {
-            // Passwords don't match, show an error message in a Snackbar
-            View view = findViewById(android.R.id.content); // Use the root view of your activity
-
-            Snackbar snackbar = Snackbar.make(view, "Passwords do not match", Snackbar.LENGTH_LONG);
-            snackbar.show();
+        // Check if any field is blank
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || password.isEmpty() || zipCode.isEmpty() || city.isEmpty()) {
+            showSnackbar("Please fill all the entries");
+            return; // Stop further processing
         }
+
+        // Check if passwords match
+        if (!password.equals(confirmPasswordEditText.getText().toString())) {
+            showSnackbar("Passwords do not match");
+            return; // Stop further processing
+        }
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        // Create a new user with email and password
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Registration and user creation are successful
+                        FirebaseUser user = auth.getCurrentUser();
+                        // Now you are logged in as the new user
+                        showSnackbar("Registration Successful");
+
+                        // Proceed to store user data in Firestore and navigate to the Hovedside activity
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        CollectionReference usersCollection = db.collection("users");
+
+                        Map<String, Object> userData = new HashMap<>();
+                        userData.put("firstName", firstName);
+                        userData.put("lastName", lastName);
+                        userData.put("email", email);
+                        userData.put("phone", phone);
+                        userData.put("address", address);
+                        userData.put("zipCode", zipCode);
+                        userData.put("city", city);
+
+                        // Add the user data to the "users" collection
+                        usersCollection.add(userData)
+                                .addOnSuccessListener(documentReference -> {
+                                    // Data added successfully
+                                    // Now navigate to the Hovedside activity
+                                    Intent intent = new Intent(RegistrationActivity.this, Hovedside.class);
+                                    startActivity(intent);
+                                    finish(); // Close the current activity
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Handle the failure to add data
+                                    showSnackbar("Data storage failed. Please try again.");
+                                });
+                    } else {
+                        // Registration failed
+                        showSnackbar("Registration failed. Please try again.");
+                    }
+                });
     }
+
+    private void showSnackbar(String message) {
+        View view = findViewById(android.R.id.content); // Use the root view of your activity
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
+
 }
