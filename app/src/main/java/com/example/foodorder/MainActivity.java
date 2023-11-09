@@ -33,9 +33,12 @@ public class MainActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Handle the Register button click. You can open a registration activity or perform registration logic here.
+                // Handle the Register button click by starting the RegistrationActivity
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class); // Replace CurrentActivity with the name of your current activity
+                startActivity(intent);
             }
         });
+
     }
 }
 

@@ -1,133 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
+    tools:context=".RegistrationActivity">
 
-    <EditText
-        android:id="@+id/firstNameEditText"
+    <!-- First Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/firstNameInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="First Name"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-    />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/lastNameEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/firstNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Last Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/lastNameInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/firstNameEditText"
         android:hint="Last Name"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/emailEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Email -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lastNameEditText"
         android:hint="Email"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/phoneEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Phone -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phoneInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/emailEditText"
         android:hint="Phone"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/addressEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Address -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/addressInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/phoneEditText"
         android:hint="Address"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/passwordEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/addressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addressEditText"
         android:hint="Create Password"
-        android:inputType="textPassword"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/confirmPasswordEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Confirm Password -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirmPasswordInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/passwordEditText"
         android:hint="Confirm Password"
-        android:inputType="textPassword"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"
-        />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/zipCodeEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirmPasswordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Zip Code -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/zipCodeInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addressEditText"
         android:hint="Zip Code"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp" />
+        android:textColorHint="#000000">
 
-    <EditText
-        android:id="@+id/cityEditText"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/zipCodeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- City -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/cityInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/zipCodeEditText"
         android:hint="City"
-        android:background="@drawable/edittext_background"
-        android:padding="10dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp" />
+        android:textColorHint="#000000">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/cityEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/confirmPasswordEditText"
-        android:layout_marginTop="92dp"
-        android:background="@drawable/button_background"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#F79808"
         android:text="Register"
         android:textColor="#000000" />
-</RelativeLayout>
+</LinearLayout>
