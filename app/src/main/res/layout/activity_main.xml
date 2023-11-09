@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
+    <!-- Header -->
     <TextView
-        android:id="@+id/headerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pizza Ordering App"
-        android:textSize="34sp"
+        android:text="Food Order"
+        android:textSize="32sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:textColor="#000000"
+        android:layout_marginBottom="24dp" />
 
+    <!-- Log In Button -->
     <Button
-        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F79808"
+        android:text="Log In"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/loginButton" />
+
+    <!-- Not a user yet? Register here... -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log in"
-        app:layout_constraintTop_toBottomOf="@+id/headerTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#FFFFFF"
+        android:text="Not a user yet? Register here..."
+        android:textSize="14sp"
         android:textColor="#000000"
-        android:layout_marginTop="380dp"/>
+        android:layout_marginBottom="16dp" />
 
+    <!-- Register Button -->
     <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Account"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#FFFFFF"
+        android:backgroundTint="#F79808"
+        android:text="Register"
         android:textColor="#000000"
-        android:layout_marginTop="16dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="20sp"
+        android:id="@+id/registerButton" />
+</LinearLayout>
