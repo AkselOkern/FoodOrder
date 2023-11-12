@@ -82,6 +82,12 @@ public class RegistrationActivity extends AppCompatActivity {
             return; // Stop further processing
         }
 
+        // Check if the password is at least 6 characters long
+        if (password.length() < 6) {
+            showSnackbar("Password must be 6 or more characters");
+            return; // Stop further processing
+        }
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         // Create a new user with email and password
