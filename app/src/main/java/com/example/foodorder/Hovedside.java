@@ -1,4 +1,4 @@
-package com.example.foodorder; // Change this to your package name
+package com.example.foodorder;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Hovedside extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
 
-    private static final String TAG = "Hovedside";
+    //private static final String TAG = "Hovedside";
 
 
     BottomNavigationView bottomNavigationView;
@@ -34,24 +34,21 @@ public class Hovedside extends AppCompatActivity implements BottomNavigationView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.navigation_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
-                return true;
-            case R.id.navigation_map:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
-                return true;
-            case R.id.navigation_cart:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, cartFragment).commit();
-                return true;
-            case R.id.navigation_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
-                return true;
-
-
+        if (item.getItemId() == R.id.navigation_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_map) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_cart) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, cartFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_profile) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+            return true;
         }
         return false;
     }
+
 }
 
