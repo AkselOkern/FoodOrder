@@ -53,4 +53,4 @@ public class Hovedside extends AppCompatActivity implements BottomNavigationView
     }
 
 }
-
+//commit
