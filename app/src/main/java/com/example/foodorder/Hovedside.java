@@ -35,16 +35,16 @@ public class Hovedside extends AppCompatActivity implements BottomNavigationView
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.navigation_home) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, homeFragment).commit();
             return true;
         } else if (item.getItemId() == R.id.navigation_map) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, mapFragment).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, mapFragment).commit();
             return true;
         } else if (item.getItemId() == R.id.navigation_cart) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, cartFragment).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, cartFragment).commit();
             return true;
         } else if (item.getItemId() == R.id.navigation_profile) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, profileFragment).commit();
             return true;
         }
         return false;
