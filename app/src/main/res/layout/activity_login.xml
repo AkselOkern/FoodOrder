@@ -9,7 +9,7 @@
     android:gravity="center"
     android:padding="16dp"
     android:background="@color/colorBackground"
-    tools:context=".LoginActivity">
+    tools:context=".Login">
 
     <!-- Header -->
     <TextView
