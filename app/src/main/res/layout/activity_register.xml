@@ -19,6 +19,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/primary_100"
+
         android:layout_marginBottom="32dp"
         style="@style/TextAppearance.MaterialComponents.Headline5"/>
 
@@ -28,6 +29,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="First Name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -43,6 +46,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Last Name">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +63,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Email">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -73,6 +80,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Phone">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -88,6 +97,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Address">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -103,6 +114,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Create Password">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -118,6 +131,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Confirm Password">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -133,6 +148,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="Zip Code">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -148,6 +165,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
         android:hint="City">
 
         <com.google.android.material.textfield.TextInputEditText
