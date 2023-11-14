@@ -48,10 +48,11 @@ public class Home extends Fragment {
         pizzaAdapter = new PizzaAdapter(pizzaList);
 
         // Set up the RecyclerView with the adapter
+        // https://developer.android.com/develop/ui/views/layout/recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(pizzaAdapter);
 
-        // Query to get all pizza items
+        // Query Firebase to get all pizza items
         CollectionReference pizzaCollection = firebaseFirestore.collection("pizza");
         pizzaCollection.orderBy("itemName").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -109,8 +110,6 @@ public class Home extends Fragment {
 
         public PizzaViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            // Initialize views
             imageViewPizza = itemView.findViewById(R.id.imageViewPizza);
             textViewItemName = itemView.findViewById(R.id.textViewItemName);
             textViewPrice = itemView.findViewById(R.id.textViewPrice);
@@ -122,38 +121,37 @@ public class Home extends Fragment {
 
         @SuppressLint("DefaultLocale")
         public void setPizzaData(Pizza pizza) {
-            // Set data to views in the card layout
-
             // Use Glide for image loading
+            // https://bumptech.github.io/glide/
             Glide.with(itemView.getContext())
                     .load(pizza.getImagePath())
-                    .placeholder(R.drawable.placeholder_image_loading) // Replace with your placeholder
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Optional: Cache the image
-                    .into(imageViewPizza);
+                    .placeholder(R.drawable.placeholder_image_loading) // Placeholder image while loading
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image
+                    .into(imageViewPizza); // ImageView to load the image into
 
             textViewItemName.setText(pizza.getItemName());
-            textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice())); // Format price to display two decimal places
+            textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice()));
 
             // Quantity handling
             final int[] quantity = {1}; // Default quantity
             textViewQuantity.setText(String.valueOf(quantity[0]));
 
-            btnDecrease.setOnClickListener(v -> {
+            btnDecrease.setOnClickListener(v -> { // Decrease quantity
                 if (quantity[0] > 1) {
                     quantity[0]--;
                     textViewQuantity.setText(String.valueOf(quantity[0]));
                 }
             });
 
-            btnIncrease.setOnClickListener(v -> {
+            btnIncrease.setOnClickListener(v -> { // Increase quantity
                 quantity[0]++;
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            // Add to cart logic
             btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0]));
         }
         private void addToCart(Pizza pizza, int quantity) {
+
             // TODO: Add to cart logic
 
             String message = quantity + " " + pizza.getItemName() + "(s) added to cart";
