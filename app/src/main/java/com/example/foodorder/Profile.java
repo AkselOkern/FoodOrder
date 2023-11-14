@@ -32,14 +32,20 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class Profile extends Fragment {
     private TextView firstNameTextView, lastNameTextView, emailTextView, phoneTextView, addressTextView, zipcodeTextView, cityTextView;
     private Button editAddressButton, deleteProfileButton, logoutButton;
 
     private FirebaseAuth firebaseAuth;
+    // Firebase
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+    private ListenerRegistration userDataListener;
     private FirebaseFirestore firestore;
 
     public Profile() {
@@ -82,129 +88,48 @@ public class Profile extends Fragment {
     }
 
     private void loadUserData() {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            firestore.collection("users").document(currentUser.getUid())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                String firstName = document.getString("firstName");
-                                String lastName = document.getString("lastName");
-                                String email = document.getString("email");
-                                String phone = document.getString("phone");
-                                String address = document.getString("address");
-                                String zipcode = document.getString("zipcode");
-                                String city = document.getString("city");
+            String userEmail = currentUser.getEmail();
 
-                                // Verify the email before displaying data
-                                if (currentUser.getEmail().equals(email)) {
-                                    // Set user data to TextViews
-                                    firstNameTextView.setText(firstName);
-                                    lastNameTextView.setText(lastName);
-                                    emailTextView.setText(email);
-                                    phoneTextView.setText(phone);
-                                    addressTextView.setText(address);
-                                    zipcodeTextView.setText(zipcode);
-                                    cityTextView.setText(city);
-                                } else {
-                                    Log.e(TAG, "fiks koden display", task.getException());
-                                }
-                            }
-                        }
-                    });
+            DocumentReference userRef = db.collection("users").document(userEmail);
+            userDataListener = userRef.addSnapshotListener((documentSnapshot, e) -> {
+                if (e != null) {
+                    // Handle errors
+                    return;
+                }
+
+                if (documentSnapshot != null && documentSnapshot.exists()) {
+                    // Extract user data from the document
+                    String firstName = documentSnapshot.getString("firstName");
+                    String lastName = documentSnapshot.getString("lastName");
+                    String email = documentSnapshot.getString("email");
+                    String phone = documentSnapshot.getString("phone");
+                    String address = documentSnapshot.getString("address");
+                    String zipcode = documentSnapshot.getString("zipcode");
+                    String city = documentSnapshot.getString("city");
+
+                    // Set TextViews with retrieved data
+                    firstNameTextView.setText(firstName);
+                    lastNameTextView.setText(lastName);
+                    emailTextView.setText(email);
+                    phoneTextView.setText(phone);
+                    addressTextView.setText(address);
+                    zipcodeTextView.setText(zipcode);
+                    cityTextView.setText(city);
+                }
+            });
         }
     }
+
 
     private void editAddress() {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            firestore.collection("users").document(currentUser.getUid())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                String email = document.getString("email");
 
-                                // Verify the email before editing the address
-                                if (currentUser.getEmail().equals(email)) {
-                                    // Implement logic for editing address
-                                } else {
-                                    Log.e(TAG, "fiks koden adresse", task.getException());
-                                }
-                            }
-                        }
-                    });
-        }
     }
+
 
     private void deleteProfile() {
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        if (currentUser != null) {
-            firestore.collection("users").document(currentUser.getUid())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null && document.exists()) {
-                                String email = document.getString("email");
 
-                                // Verify the email before showing the confirmation dialog
-                                if (currentUser.getEmail().equals(email)) {
-                                    // Create a confirmation dialog
-                                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
-                                    builder.setTitle("Delete Profile");
-                                    builder.setMessage("Are you sure you want to delete your profile? This action cannot be undone.");
-
-                                    builder.setPositiveButton("Delete", (dialog, which) -> deleteAccount());
-
-                                    builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-
-                                    // Show the confirmation dialog
-                                    AlertDialog dialog = builder.create();
-                                    dialog.show();
-                                } else {
-                                    Log.e(TAG, "fiks koden delete", task.getException());
-                                }
-                            }
-                        }
-                    });
-        }
-    }
-
-    private void deleteUserDataFromFirestore(String userId) {
-        // Get the reference to the "users" collection
-        CollectionReference usersCollection = FirebaseFirestore.getInstance().collection("users");
-
-        // Delete the user's document from the collection
-        usersCollection.document(userId)
-                .delete()
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "User data deleted from Firestore"))
-                .addOnFailureListener(e -> Log.e(TAG, "Error deleting user data from Firestore", e));
-    }
-    private void deleteAccount() {
-        // Get user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            // Delete the user from Firebase Authentication
-            user.delete()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            deleteUserDataFromFirestore(user.getUid());
-
-                            // Redirect user
-                            Intent intent = new Intent(requireActivity(), MainActivity.class);
-                            startActivity(intent);
-                            requireActivity().finish(); // Close the current activity
-                        } else {
-                            Log.e(TAG, "Error deleting user account", task.getException());
-
-                        }
-                    });
-        }
     }
 
         private void logout () {
