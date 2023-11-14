@@ -52,6 +52,7 @@ public class Profile extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
@@ -82,6 +83,10 @@ public class Profile extends Fragment {
         editAddressButton.setOnClickListener(v -> editAddress());
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
+
+        // Initialize Firebase again (add these lines)
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Load user data
         loadUserData();
