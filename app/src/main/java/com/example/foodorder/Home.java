@@ -29,8 +29,6 @@ import java.util.List;
 
 public class Home extends Fragment {
 
-    private RecyclerView recyclerView;
-    private FirebaseFirestore firebaseFirestore;
     private List<Pizza> pizzaList;
     private PizzaAdapter pizzaAdapter;
 
@@ -42,8 +40,8 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         pizzaList = new ArrayList<>();
         pizzaAdapter = new PizzaAdapter(pizzaList);
 
@@ -73,7 +71,7 @@ public class Home extends Fragment {
     // ViewHolder for each pizza card
     private class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> {
 
-        private List<Pizza> pizzaList;
+        private final List<Pizza> pizzaList;
 
         public PizzaAdapter(List<Pizza> pizzaList) {
             this.pizzaList = pizzaList;
@@ -100,13 +98,13 @@ public class Home extends Fragment {
 
     public class PizzaViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView imageViewPizza;
-        private TextView textViewItemName;
-        private TextView textViewPrice;
-        private TextView textViewQuantity;
-        private Button btnDecrease;
-        private Button btnIncrease;
-        private Button btnAddToCart;
+        private final ImageView imageViewPizza;
+        private final TextView textViewItemName;
+        private final TextView textViewPrice;
+        private final TextView textViewQuantity;
+        private final Button btnDecrease;
+        private final Button btnIncrease;
+        private final Button btnAddToCart;
 
         public PizzaViewHolder(@NonNull View itemView) {
             super(itemView);
