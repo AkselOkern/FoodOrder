@@ -8,57 +8,64 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    android:background="@color/colorBackground"
+    android:background="@color/bg_100"
     tools:context=".Login">
 
-    <!-- Header -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
-        android:textSize="24sp"
+        android:text="Welcome Back"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="16dp" />
+        android:textColor="@color/text_100"
+        android:layout_marginBottom="32dp"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        tools:ignore="HardcodedText" />
 
-    <!-- Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
-        android:textColorHint="#000000">
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Password -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:textColorHint="#000000">
+        app:boxBackgroundColor="@color/bg_200"
+        app:hintTextColor="@color/text_100"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textStyle="bold"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#F79808"
+        android:backgroundTint="@color/primary_100"
         android:text="Login"
-        android:textColor="#000000" />
+        android:textColor="#FFFFFF"
+        style="@style/Widget.MaterialComponents.Button"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

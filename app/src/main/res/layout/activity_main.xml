@@ -8,46 +8,50 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="16dp"
-    android:background="@color/colorBackground"
+    android:background="@color/bg_100"
     tools:context=".MainActivity">
 
-    <!-- Header -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Food Order"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="24dp" />
+        android:textColor="@color/text_100"
+        android:layout_marginBottom="24dp"
+        style="@style/TextAppearance.AppCompat.Headline"
+        tools:ignore="HardcodedText" />
 
-    <!-- Log In Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F79808"
         android:text="Log In"
-        android:textColor="#000000"
+        android:textColor="@color/primary_300"
         android:textSize="20sp"
+        android:backgroundTint="@color/primary_100"
         android:layout_marginBottom="16dp"
-        android:id="@+id/loginButton" />
+        android:id="@+id/loginButton"
+        style="@style/Widget.MaterialComponents.Button"
+        tools:ignore="HardcodedText" />
 
-    <!-- Not a user yet? Register here... -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Not a user yet? Register here..."
         android:textSize="14sp"
-        android:textColor="#000000"
-        android:layout_marginBottom="16dp" />
+        android:textColor="@color/text_200"
+        android:layout_marginBottom="16dp"
+        style="@style/TextAppearance.AppCompat.Body1"
+        tools:ignore="HardcodedText" />
 
-    <!-- Register Button -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F79808"
         android:text="Register"
-        android:textColor="#000000"
+        android:textColor="@color/primary_300"
         android:textSize="20sp"
-        android:id="@+id/registerButton" />
+        android:id="@+id/registerButton"
+        android:backgroundTint="@color/primary_100"
+        style="@style/Widget.MaterialComponents.Button"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

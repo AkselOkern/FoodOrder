@@ -2,7 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.FoodOrder" parent="Theme.MaterialComponents.Light">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/primary_100</item>
+        <item name="colorPrimaryVariant">@color/primary_200</item>
+        <item name="colorOnPrimary">@color/accent_100</item>
+
+        <item name="colorSecondary">@color/accent_100</item>
+        <item name="colorSecondaryVariant">@color/accent_200</item>
+        <item name="colorOnSecondary">@color/text_100</item>
+
+        <item name="colorSurface">@color/bg_100</item>
+        <item name="colorOnSurface">@color/text_100</item>
+
+        <item name="android:navigationBarColor">@color/primary_100</item>
+        <item name="android:statusBarColor">@color/primary_100</item>
     </style>
 
     <style name="Theme.FoodOrder" parent="Base.Theme.FoodOrder" />

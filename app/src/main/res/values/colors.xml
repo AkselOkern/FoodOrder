@@ -1,7 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F79808</color> <!-- Orange for colorPrimary -->
-    <color name="colorPrimaryDark">#F79808</color> <!-- Darker orange for colorPrimaryDark -->
-    <color name="colorAccent">#2196F3</color> <!-- Blue for colorAccent -->
-    <color name="colorBackground">#FFFFFF</color> <!-- Black background -->
+    <!-- Primary Colors -->
+    <color name="primary_100">#bb2649</color>
+    <color name="primary_200">#f35d74</color>
+    <color name="primary_300">#ffc3d4</color>
+
+    <!-- Accent Colors -->
+    <color name="accent_100">#ffadad</color>
+    <color name="accent_200">#ffd6a5</color>
+
+    <!-- Text Colors -->
+    <color name="text_100">#4b4f5d</color>
+    <color name="text_200">#6a738b</color>
+
+    <!-- Background Colors -->
+    <color name="bg_100">#ffffff</color>
+    <color name="bg_200">#f5f5f5</color>
+    <color name="bg_300">#cccccc</color>
 </resources>
