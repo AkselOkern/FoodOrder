@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,10 +34,9 @@ public class Home extends Fragment {
     private List<Pizza> pizzaList;
     private PizzaAdapter pizzaAdapter;
 
-    public Home() {
-        // Required empty public constructor
-    }
+    public Home() {}
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,19 +53,16 @@ public class Home extends Fragment {
 
         // Query to get all pizza items
         CollectionReference pizzaCollection = firebaseFirestore.collection("pizza");
-        pizzaCollection.orderBy("itemName").get().addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    pizzaList.clear();
-                    for (DocumentSnapshot document : task.getResult()) {
-                        Pizza pizza = document.toObject(Pizza.class);
-                        pizzaList.add(pizza);
-                    }
-                    pizzaAdapter.notifyDataSetChanged();
-                } else {
-                    Toast.makeText(getActivity(), "Error fetching pizza items", Toast.LENGTH_SHORT).show();
+        pizzaCollection.orderBy("itemName").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                pizzaList.clear();
+                for (DocumentSnapshot document : task.getResult()) {
+                    Pizza pizza = document.toObject(Pizza.class);
+                    pizzaList.add(pizza);
                 }
+                pizzaAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(), "Error fetching pizza items", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,8 +97,6 @@ public class Home extends Fragment {
         }
     }
 
-    // ViewHolder for each pizza card
-// Inside PizzaViewHolder class
     public class PizzaViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imageViewPizza;
@@ -158,13 +153,16 @@ public class Home extends Fragment {
             // Add to cart logic
             btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0]));
         }
-
-        // Implement a method to handle adding to the cart
         private void addToCart(Pizza pizza, int quantity) {
-            // Add logic to add the selected pizza with the specified quantity to the cart
-            // You can use this method to trigger an action when the "Add to Cart" button is clicked
-            // Example: cartManager.addToCart(pizza, quantity);
+            // TODO: Add to cart logic
+
+            String message = quantity + " " + pizza.getItemName() + "(s) added to cart";
+            View view = getView(); // Make sure to get the appropriate view reference based on your context
+            if (view != null) {
+                Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
+
 
 }
