@@ -14,6 +14,7 @@
         <item name="colorOnSurface">@color/text_100</item>
 
         <item name="android:navigationBarColor">@color/primary_100</item>
+        <item name="android:textColorPrimary">@color/bg_100</item>
         <item name="android:statusBarColor">@color/primary_100</item>
     </style>
 
