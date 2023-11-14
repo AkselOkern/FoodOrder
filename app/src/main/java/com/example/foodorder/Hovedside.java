@@ -21,7 +21,7 @@ public class Hovedside extends AppCompatActivity implements BottomNavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hovedside);
-        Log.d("Hovedside", "onCreate");
+        //Log.d("Hovedside", "onCreate");
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -35,7 +35,7 @@ public class Hovedside extends AppCompatActivity implements BottomNavigationView
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.d("Hovedside", "onNavigationItemSelected: " + item.getItemId());
+        //Log.d("Hovedside", "onNavigationItemSelected: " + item.getItemId());
         if (item.getItemId() == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, homeFragment).commit();
             return true;
