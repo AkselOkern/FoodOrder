@@ -36,6 +36,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class Profile extends Fragment {
     private TextView firstNameTextView, lastNameTextView, emailTextView, phoneTextView, addressTextView, zipcodeTextView, cityTextView;
@@ -97,35 +99,36 @@ public class Profile extends Fragment {
         if (currentUser != null) {
             String userEmail = currentUser.getEmail();
 
-            DocumentReference userRef = db.collection("users").document(userEmail);
-            userDataListener = userRef.addSnapshotListener((documentSnapshot, e) -> {
-                if (e != null) {
+            CollectionReference usersCollection = db.collection("users");
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        String firstName = documentSnapshot.getString("firstName");
+                        String lastName = documentSnapshot.getString("lastName");
+                        String email = documentSnapshot.getString("email");
+                        String phone = documentSnapshot.getString("phone");
+                        String address = documentSnapshot.getString("address");
+                        String zipcode = documentSnapshot.getString("zipcode");
+                        String city = documentSnapshot.getString("city");
+
+                        // Set TextViews with retrieved data
+                        firstNameTextView.setText(firstName);
+                        lastNameTextView.setText(lastName);
+                        emailTextView.setText(email);
+                        phoneTextView.setText(phone);
+                        addressTextView.setText(address);
+                        zipcodeTextView.setText(zipcode);
+                        cityTextView.setText(city);
+                    }
+                } else {
                     // Handle errors
-                    return;
-                }
-
-                if (documentSnapshot != null && documentSnapshot.exists()) {
-                    // Extract user data from the document
-                    String firstName = documentSnapshot.getString("firstName");
-                    String lastName = documentSnapshot.getString("lastName");
-                    String email = documentSnapshot.getString("email");
-                    String phone = documentSnapshot.getString("phone");
-                    String address = documentSnapshot.getString("address");
-                    String zipcode = documentSnapshot.getString("zipcode");
-                    String city = documentSnapshot.getString("city");
-
-                    // Set TextViews with retrieved data
-                    firstNameTextView.setText(firstName);
-                    lastNameTextView.setText(lastName);
-                    emailTextView.setText(email);
-                    phoneTextView.setText(phone);
-                    addressTextView.setText(address);
-                    zipcodeTextView.setText(zipcode);
-                    cityTextView.setText(city);
                 }
             });
         }
     }
+
 
 
     private void editAddress() {
