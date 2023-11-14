@@ -1,14 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Profile">
+    android:layout_centerInParent="true"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PROFILE" />
+        android:id="@+id/firstNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="First Name" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/lastNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstNameTextView"
+        android:layout_marginTop="8dp"
+        android:text="Last Name"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/emailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lastNameTextView"
+        android:layout_marginTop="8dp"
+        android:text="Email"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/phoneTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emailTextView"
+        android:layout_marginTop="8dp"
+        android:text="Phone"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/phoneTextView"
+        android:layout_marginTop="8dp"
+        android:text="Address"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/zipcodeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addressTextView"
+        android:layout_marginTop="8dp"
+        android:text="Zipcode"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/cityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/zipcodeTextView"
+        android:layout_marginTop="8dp"
+        android:text="City"
+        android:gravity="center"/>
+
+    <Button
+        android:id="@+id/editAddressButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cityTextView"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
+        android:text="Edit Address" />
+
+    <Button
+        android:id="@+id/deleteProfileButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editAddressButton"
+        android:layout_marginTop="11dp"
+        android:gravity="center"
+        android:text="Delete Profile" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/deleteProfileButton"
+        android:layout_marginTop="8dp"
+        android:text="Logout"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:gravity="center"/>
+
+</RelativeLayout>
+
+
