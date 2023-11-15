@@ -159,7 +159,7 @@ public class Home extends Fragment {
             // TODO: Add to cart logic
 
             String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
-            View view = getView(); // Make sure to get the appropriate view reference based on your context
+            View view = getView();
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             }
