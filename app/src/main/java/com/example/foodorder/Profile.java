@@ -85,7 +85,14 @@ public class Profile extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
-        editAddressButton.setOnClickListener(v -> editAddress());
+        editAddressButton.setOnClickListener(v -> editAddress(
+                firstNameTextView.getText().toString(),
+                lastNameTextView.getText().toString(),
+                emailTextView.getText().toString(),
+                phoneTextView.getText().toString(),
+                addressTextView.getText().toString(),
+                zipcodeTextView.getText().toString(),
+                cityTextView.getText().toString()));
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
 
