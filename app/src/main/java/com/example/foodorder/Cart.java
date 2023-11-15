@@ -41,6 +41,9 @@ public class Cart extends Fragment {
         Button btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
 
         cartItemsList = getCartItemsFromSharedPreferences(); // Retrieve cart items from SharedPreferences
+        if (cartItemsList == null) {
+            cartItemsList = new ArrayList<>(); // Initialize cartItemsList if null
+        }
 
         cartAdapter = new CartAdapter(getContext(), cartItemsList);
         listViewCartItems.setAdapter(cartAdapter);
@@ -76,8 +79,9 @@ public class Cart extends Fragment {
         editor.remove("cartItems");
         editor.apply();
 
-        // Clear the cart items list locally
-        cartItemsList.clear();
+        if (cartItemsList != null) {
+            cartItemsList.clear(); // Clear the cart items list if not null
+        }
     }
 
     // Adapter for displaying cart items in the ListView
@@ -100,18 +104,23 @@ public class Cart extends Fragment {
                 listItem = LayoutInflater.from(context).inflate(R.layout.cart_list_item, parent, false);
             }
 
-            CartItem currentItem = cartItemsList.get(position);
+            if (cartItemsList != null && !cartItemsList.isEmpty() && position < cartItemsList.size()) {
+                CartItem currentItem = cartItemsList.get(position);
 
-            // Set the data to your list item layout elements (e.g., TextViews)
-            TextView itemNameTextView = listItem.findViewById(R.id.textViewCartItemName);
-            TextView itemSizeTextView = listItem.findViewById(R.id.textViewCartItemSize);
-            TextView itemQuantityTextView = listItem.findViewById(R.id.textViewCartItemQuantity);
+                // Set the data to your list item layout elements (e.g., TextViews)
+                TextView itemNameTextView = listItem.findViewById(R.id.textViewCartItemName);
+                TextView itemSizeTextView = listItem.findViewById(R.id.textViewCartItemSize);
+                TextView itemQuantityTextView = listItem.findViewById(R.id.textViewCartItemQuantity);
+                TextView itemPriceTextView = listItem.findViewById(R.id.textViewCartItemPrice);
 
-            itemNameTextView.setText(currentItem.getItemName());
-            itemSizeTextView.setText("Size: " + currentItem.getSize());
-            itemQuantityTextView.setText("Quantity: " + currentItem.getQuantity());
+                itemNameTextView.setText(currentItem.getItemName());
+                itemSizeTextView.setText("Size: " + currentItem.getSize());
+                itemQuantityTextView.setText("Quantity: " + currentItem.getQuantity());
+                itemPriceTextView.setText("Price: "+currentItem.getItemPrice());
+            }
 
             return listItem;
         }
     }
+
 }

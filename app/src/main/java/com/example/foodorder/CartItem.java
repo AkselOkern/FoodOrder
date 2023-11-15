@@ -4,8 +4,10 @@ public class CartItem {
     private String itemName;
     private String size;
     private int quantity;
+    private double itemPrice;
 
-    public CartItem(String itemName, String size, int quantity) {
+
+    public CartItem(String itemName, String size, int quantity, double price) {
         this.itemName = itemName;
         this.size = size;
         this.quantity = quantity;
@@ -34,6 +36,14 @@ public class CartItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    public double getItemPrice() {
+        return itemPrice;
+    }
+    public void setItemPrice(double itemPrice) {
+        this.itemPrice = itemPrice;
+    }
 }
+
 
 

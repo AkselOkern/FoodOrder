@@ -175,7 +175,7 @@ public class Home extends Fragment {
             }
 
             // Add the new item to the cart
-            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity);
+            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity, pizza.getPrice());
             cartItems.add(cartItem);
 
             // Convert cartItems to JSON and save to SharedPreferences
