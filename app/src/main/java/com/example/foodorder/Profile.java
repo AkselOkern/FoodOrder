@@ -138,36 +138,38 @@ public class Profile extends Fragment {
     
     }
 
-    private void deleteProfile() {
+    private void deleteAccount() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
+            // User is logged in, proceed with deletion
             String userEmail = currentUser.getEmail();
+
+            // Deleting user from Firestore
+            CollectionReference usersCollection = db.collection("users");
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Delete documents with the matched email
+                        document.getReference().delete();
+                    }
+                } else {
+                    // Handle unsuccessful Firestore query
+                }
+            });
 
             // Deleting user from Firebase Authentication
             currentUser.delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    // User successfully deleted from Authentication, now delete from Firestore
-                    CollectionReference usersCollection = db.collection("users");
-                    Query query = usersCollection.whereEqualTo("email", userEmail);
-
-                    query.get().addOnCompleteListener(task1 -> {
-                        if (task1.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task1.getResult()) {
-                                // Delete documents with the matched email
-                                document.getReference().delete();
-                            }
-                        } else {
-                            // Handle unsuccessful Firestore query
-                        }
-                    });
+                    // Account deleted successfully
                 } else {
                     // Handle unsuccessful user deletion from Authentication
                 }
             });
         }
     }
-
 
     private void logout () {
             firebaseAuth.signOut();
