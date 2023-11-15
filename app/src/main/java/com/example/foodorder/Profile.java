@@ -40,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Profile extends Fragment {
     private TextView firstNameTextView, lastNameTextView, emailTextView, phoneTextView, addressTextView, zipcodeTextView, cityTextView;
@@ -134,46 +135,38 @@ public class Profile extends Fragment {
 
 
     private void editAddress() {
-
+    
     }
 
     private void deleteProfile() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
             String userEmail = currentUser.getEmail();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            CollectionReference usersCollection = db.collection("users");
 
-            Query query = usersCollection.whereEqualTo("email", userEmail);
-
-            query.get().addOnCompleteListener(task -> {
+            // Deleting user from Firebase Authentication
+            currentUser.delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String documentId = document.getId();
-                        usersCollection.document(documentId).delete()
-                                .addOnSuccessListener(aVoid -> {
-                                    currentUser.delete()
-                                            .addOnCompleteListener(deleteTask -> {
-                                                if (deleteTask.isSuccessful()) {
-                                                    Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
-                                                    requireActivity().finish();
-                                                } else {
-                                                    Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
-                                });
-                    }
+                    // User successfully deleted from Authentication, now delete from Firestore
+                    CollectionReference usersCollection = db.collection("users");
+                    Query query = usersCollection.whereEqualTo("email", userEmail);
+
+                    query.get().addOnCompleteListener(task1 -> {
+                        if (task1.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task1.getResult()) {
+                                // Delete documents with the matched email
+                                document.getReference().delete();
+                            }
+                        } else {
+                            // Handle unsuccessful Firestore query
+                        }
+                    });
                 } else {
-                    Toast.makeText(requireContext(), "No user found with this email", Toast.LENGTH_SHORT).show();
+                    // Handle unsuccessful user deletion from Authentication
                 }
             });
         }
     }
-
 
 
     private void logout () {
