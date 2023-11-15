@@ -138,7 +138,7 @@ public class Profile extends Fragment {
     
     }
 
-    private void deleteAccount() {
+    private void deleteProfile() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
