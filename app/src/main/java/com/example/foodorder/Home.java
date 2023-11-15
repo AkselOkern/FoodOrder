@@ -1,6 +1,8 @@
 package com.example.foodorder;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +22,13 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -155,15 +160,37 @@ public class Home extends Fragment {
             btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString()));
         }
         private void addToCart(Pizza pizza, int quantity, String size) {
+            // Create or access SharedPreferences
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
 
-            // TODO: Add to cart logic
+            // Retrieve existing cart items
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("cartItems", "");
+            Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
+            ArrayList<CartItem> cartItems = gson.fromJson(json, type);
+
+            // If cartItems is null, create a new ArrayList
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
+
+            // Add the new item to the cart
+            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity);
+            cartItems.add(cartItem);
+
+            // Convert cartItems to JSON and save to SharedPreferences
+            String updatedCart = gson.toJson(cartItems);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("cartItems", updatedCart);
+            editor.apply();
 
             String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
-            View view = getView();
+            View view = getView(); // Make sure to get the appropriate view reference based on your context
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             }
         }
+
     }
 
 
