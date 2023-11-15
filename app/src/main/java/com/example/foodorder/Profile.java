@@ -163,6 +163,9 @@ public class Profile extends Fragment {
             // Deleting user from Firebase Authentication
             currentUser.delete().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    firebaseAuth.signOut();
+                    // Navigate back to MainActivity
+                    requireActivity().finish();
                     // Account deleted successfully
                 } else {
                     // Handle unsuccessful user deletion from Authentication
