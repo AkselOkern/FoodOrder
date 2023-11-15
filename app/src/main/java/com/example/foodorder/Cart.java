@@ -63,7 +63,10 @@ public class Cart extends Fragment {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("cartItems", "");
         Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
-        return gson.fromJson(json, type);
+        ArrayList<CartItem> cartItems = gson.fromJson(json, type);
+
+        // If cartItems is null, initialize it as an empty list
+        return cartItems != null ? cartItems : new ArrayList<>();
     }
 
     // Method to clear cart items
