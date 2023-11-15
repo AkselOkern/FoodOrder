@@ -113,7 +113,7 @@ public class Profile extends Fragment {
                         String email = documentSnapshot.getString("email");
                         String phone = documentSnapshot.getString("phone");
                         String address = documentSnapshot.getString("address");
-                        String zipcode = documentSnapshot.getString("zipCode");
+                        String zipcode = documentSnapshot.getString("zipcode");
                         String city = documentSnapshot.getString("city");
 
                         // Set TextViews with retrieved data
@@ -134,9 +134,43 @@ public class Profile extends Fragment {
 
 
 
-    private void editAddress() {
-    
+    private void editAddress(String firstName, String lastName, String email, String phone, String address, String zipCode, String city) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userEmail = currentUser.getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference usersCollection = db.collection("users");
+
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Update user details
+                        usersCollection.document(document.getId()).update(
+                                "firstName", firstName,
+                                "lastName", lastName,
+                                "email", email,
+                                "phone", phone,
+                                "address", address,
+                                "zipCode", zipCode,
+                                "city", city
+                        ).addOnSuccessListener(aVoid -> {
+                            // Update successful
+                            // You can add further handling or notifications here
+                            // For example: Toast.makeText(getApplicationContext(), "Details Updated!", Toast.LENGTH_SHORT).show();
+                        }).addOnFailureListener(e -> {
+                            // Handle failure
+                            // For example: Log.e(TAG, "Error updating document", e);
+                        });
+                    }
+                } else {
+                    // Handle unsuccessful query
+                    // For example: Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            });
+        }
     }
+
 
     private void deleteProfile() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
