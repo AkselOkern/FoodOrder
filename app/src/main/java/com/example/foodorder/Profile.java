@@ -138,28 +138,43 @@ public class Profile extends Fragment {
     }
 
     private void deleteProfile() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user != null) {
-            databaseReference.child(user.getUid()).removeValue()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            user.delete()
-                                    .addOnCompleteListener(deleteTask -> {
-                                        if (deleteTask.isSuccessful()) {
-                                            Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
-                                            requireActivity().finish();
-                                        } else {
-                                            Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        if (currentUser != null) {
+            String userEmail = currentUser.getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference usersCollection = db.collection("users");
+
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String documentId = document.getId();
+                        usersCollection.document(documentId).delete()
+                                .addOnSuccessListener(aVoid -> {
+                                    currentUser.delete()
+                                            .addOnCompleteListener(deleteTask -> {
+                                                if (deleteTask.isSuccessful()) {
+                                                    Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
+                                                    requireActivity().finish();
+                                                } else {
+                                                    Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                } else {
+                    Toast.makeText(requireContext(), "No user found with this email", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
+
+
 
     private void logout () {
             firebaseAuth.signOut();
