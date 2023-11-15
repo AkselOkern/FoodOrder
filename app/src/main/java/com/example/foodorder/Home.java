@@ -19,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
@@ -157,9 +155,9 @@ public class Home extends Fragment {
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString()));
+            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString(), pizza.getPrice()));
         }
-        private void addToCart(Pizza pizza, int quantity, String size) {
+        private void addToCart(Pizza pizza, int quantity, String size, double price) {
             // Create or access SharedPreferences
             SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
 
@@ -174,8 +172,10 @@ public class Home extends Fragment {
                 cartItems = new ArrayList<>();
             }
 
+            double totalPrice = price*quantity;
+
             // Add the new item to the cart
-            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity, pizza.getPrice());
+            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity, totalPrice);
             cartItems.add(cartItem);
 
             // Convert cartItems to JSON and save to SharedPreferences
@@ -184,7 +184,7 @@ public class Home extends Fragment {
             editor.putString("cartItems", updatedCart);
             editor.apply();
 
-            String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
+            String message = quantity + " " + size + " " + pizza.getItemName() +  "(s) added to cart";
             View view = getView(); // Make sure to get the appropriate view reference based on your context
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();

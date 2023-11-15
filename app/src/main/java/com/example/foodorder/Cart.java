@@ -1,5 +1,6 @@
 package com.example.foodorder;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -96,6 +97,7 @@ public class Cart extends Fragment {
             this.cartItemsList = cartItemsList;
         }
 
+        @SuppressLint("SetTextI18n")
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -116,7 +118,7 @@ public class Cart extends Fragment {
                 itemNameTextView.setText(currentItem.getItemName());
                 itemSizeTextView.setText("Size: " + currentItem.getSize());
                 itemQuantityTextView.setText("Quantity: " + currentItem.getQuantity());
-                itemPriceTextView.setText("Price: "+currentItem.getItemPrice());
+                itemPriceTextView.setText("Price: "+ currentItem.getItemPrice());
             }
 
             return listItem;

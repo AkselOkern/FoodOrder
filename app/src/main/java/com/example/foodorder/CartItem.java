@@ -11,6 +11,7 @@ public class CartItem {
         this.itemName = itemName;
         this.size = size;
         this.quantity = quantity;
+        this.itemPrice = price;
     }
 
     public String getItemName() {
