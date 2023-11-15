@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -131,16 +133,87 @@ public class Profile extends Fragment {
 
 
 
-    private void editAddress() {
+    private void editAddress(String newFirstName, String newLastName, String newEmail,
+                             String newPhoneNumber, String newAddress, String newZipCode,
+                             String newCity) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+        if (user != null) {
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(newFirstName + " " + newLastName)
+                    .build();
+
+            user.updateProfile(profileUpdates)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            //First name, last name, and display name updated successfully
+                            Toast.makeText(getApplicationContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Failed to update first name, last name, or display name
+                            Toast.makeText(getApplicationContext(), "Failed to update profile", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            user.updateEmail(newEmail)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            //Email updated
+                            Toast.makeText(getApplicationContext(), "Email updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Failed to update email
+                            Toast.makeText(getApplicationContext(), "Failed to update email", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            user.updatePhoneNumber(newPhoneNumber)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            //Phone number updated
+                            Toast.makeText(getApplicationContext(), "Phone number updated successfully", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //Failed to update phone number
+                            Toast.makeText(getApplicationContext(), "Failed to update phone number", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            //Update additional details like address, zip code, and city in Firebase Realtime Database
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+            Map<String, Object> userDataUpdates = new HashMap<>();
+            userDataUpdates.put("address", newAddress);
+            userDataUpdates.put("zipcode", newZipCode);
+            userDataUpdates.put("city", newCity);
+
+            databaseReference.updateChildren(userDataUpdates)
+                    .addOnSuccessListener(aVoid -> {
+                        //ddress, zip code, and city updated
+                        Toast.makeText(getApplicationContext(), "Address details updated successfully", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        //Failed to update address details
+                        Toast.makeText(getApplicationContext(), "Failed to update address details", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
 
     private void deleteProfile() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+        if (user != null) {
+            user.delete()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
+                            requireActivity().finish();
+                        } else {
+                            Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
     }
 
-        private void logout () {
+    private void logout () {
             firebaseAuth.signOut();
             // Navigate back to MainActivity
             requireActivity().finish();
