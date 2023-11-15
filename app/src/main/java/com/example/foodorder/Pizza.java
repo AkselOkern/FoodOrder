@@ -5,6 +5,8 @@ public class Pizza {
     private String imagePath;
     private String itemName;
     private double price;
+    private String size;
+
 
     // Required default constructor for Firestore
     public Pizza() {
@@ -38,5 +40,13 @@ public class Pizza {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

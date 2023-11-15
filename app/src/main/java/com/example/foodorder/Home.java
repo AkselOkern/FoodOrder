@@ -25,6 +25,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Home extends Fragment {
@@ -105,6 +106,7 @@ public class Home extends Fragment {
         private final Button btnDecrease;
         private final Button btnIncrease;
         private final Button btnAddToCart;
+        private final androidx.appcompat.widget.AppCompatSpinner spinnerPizzaSize;
 
         public PizzaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,6 +117,7 @@ public class Home extends Fragment {
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             btnAddToCart = itemView.findViewById(R.id.btnAddToCart);
+            spinnerPizzaSize = itemView.findViewById(R.id.spinnerPizzaSize);
         }
 
         @SuppressLint("DefaultLocale")
@@ -129,6 +132,9 @@ public class Home extends Fragment {
 
             textViewItemName.setText(pizza.getItemName());
             textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice()));
+
+            int sizePosition = Arrays.asList(getResources().getStringArray(R.array.pizza_sizes)).indexOf(pizza.getSize());
+            spinnerPizzaSize.setSelection(sizePosition);
 
             // Quantity handling
             final int[] quantity = {1}; // Default quantity
@@ -146,13 +152,13 @@ public class Home extends Fragment {
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0]));
+            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString()));
         }
-        private void addToCart(Pizza pizza, int quantity) {
+        private void addToCart(Pizza pizza, int quantity, String size) {
 
             // TODO: Add to cart logic
 
-            String message = quantity + " " + pizza.getItemName() + "(s) added to cart";
+            String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
             View view = getView(); // Make sure to get the appropriate view reference based on your context
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
