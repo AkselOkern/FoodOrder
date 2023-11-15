@@ -139,13 +139,21 @@ public class Profile extends Fragment {
 
     private void deleteProfile() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
 
         if (user != null) {
-            user.delete()
+            databaseReference.child(user.getUid()).removeValue()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
-                            requireActivity().finish();
+                            user.delete()
+                                    .addOnCompleteListener(deleteTask -> {
+                                        if (deleteTask.isSuccessful()) {
+                                            Toast.makeText(requireContext(), "Profile deleted", Toast.LENGTH_SHORT).show();
+                                            requireActivity().finish();
+                                        } else {
+                                            Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         } else {
                             Toast.makeText(requireContext(), "Failed to delete profile", Toast.LENGTH_SHORT).show();
                         }
