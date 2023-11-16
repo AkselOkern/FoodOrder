@@ -95,6 +95,27 @@ public class Profile extends Fragment {
                 cityTextView.getText().toString()));
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
+
+        //test
+        // Inside a Fragment
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        deleteProfileButton = dialogView.findViewById(R.id.btnCancel);
+        deleteProfileButton = dialogView.findViewById(R.id.btnDelete);
+        deleteProfileButton.setOnClickListener(v -> {
+            // Dismiss the dialog when Cancel button is clicked
+            dialog.dismiss();
+        });
+        deleteProfileButton.setOnClickListener(v -> {
+            // Call the deleteProfile() method when Delete button is clicked
+            deleteProfile(); // Call your deletion logic here
+            // Dismiss the dialog after initiating profile deletion
+            dialog.dismiss();
+        });
+        dialog.show(); // Show the dialog
         
 
 
