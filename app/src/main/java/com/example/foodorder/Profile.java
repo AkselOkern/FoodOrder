@@ -93,31 +93,33 @@ public class Profile extends Fragment {
                 addressTextView.getText().toString(),
                 zipcodeTextView.getText().toString(),
                 cityTextView.getText().toString()));
-        deleteProfileButton.setOnClickListener(v -> deleteProfile());
+        deleteProfileButton.setOnClickListener(v -> {
+            // Inside a Fragment
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            LayoutInflater inflater = requireActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            View cancelDialogProfileButton = dialogView.findViewById(R.id.btnCancel);
+            View deleteDialogProfileButton = dialogView.findViewById(R.id.btnDelete);
+
+            cancelDialogProfileButton.setOnClickListener(cancelView -> {
+                // Dismiss the dialog when Cancel button is clicked
+                dialog.dismiss();
+            });
+
+            deleteDialogProfileButton.setOnClickListener(deleteView -> {
+                // Call the deleteProfile() method when Delete button is clicked
+                deleteProfile();
+                // Dismiss the dialog after initiating profile deletion
+                dialog.dismiss();
+            });
+
+            dialog.show(); // Show the dialog
+        });
+
         logoutButton.setOnClickListener(v -> logout());
-
-        //test
-        // Inside a Fragment
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-        deleteProfileButton = dialogView.findViewById(R.id.btnCancel);
-        deleteProfileButton = dialogView.findViewById(R.id.btnDelete);
-        deleteProfileButton.setOnClickListener(v -> {
-            // Dismiss the dialog when Cancel button is clicked
-            dialog.dismiss();
-        });
-        deleteProfileButton.setOnClickListener(v -> {
-            // Call the deleteProfile() method when Delete button is clicked
-            deleteProfile(); // Call your deletion logic here
-            // Dismiss the dialog after initiating profile deletion
-            dialog.dismiss();
-        });
-        dialog.show(); // Show the dialog
         
-
 
         // Initialize Firebase again (add these lines)
         mAuth = FirebaseAuth.getInstance();
