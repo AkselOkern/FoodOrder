@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Profile extends Fragment {
     private TextView firstNameTextView, lastNameTextView, emailTextView, phoneTextView, addressTextView, zipcodeTextView, cityTextView;
@@ -82,9 +85,41 @@ public class Profile extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
-        editAddressButton.setOnClickListener(v -> editAddress());
-        deleteProfileButton.setOnClickListener(v -> deleteProfile());
+        editAddressButton.setOnClickListener(v -> editAddress(
+                firstNameTextView.getText().toString(),
+                lastNameTextView.getText().toString(),
+                emailTextView.getText().toString(),
+                phoneTextView.getText().toString(),
+                addressTextView.getText().toString(),
+                zipcodeTextView.getText().toString(),
+                cityTextView.getText().toString()));
+        deleteProfileButton.setOnClickListener(v -> {
+            // Inside a Fragment
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            LayoutInflater inflater = requireActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
+            builder.setView(dialogView);
+            AlertDialog dialog = builder.create();
+            View cancelDialogProfileButton = dialogView.findViewById(R.id.btnCancel);
+            View deleteDialogProfileButton = dialogView.findViewById(R.id.btnDelete);
+
+            cancelDialogProfileButton.setOnClickListener(cancelView -> {
+                // Dismiss the dialog when Cancel button is clicked
+                dialog.dismiss();
+            });
+
+            deleteDialogProfileButton.setOnClickListener(deleteView -> {
+                // Call the deleteProfile() method when Delete button is clicked
+                deleteProfile();
+                // Dismiss the dialog after initiating profile deletion
+                dialog.dismiss();
+            });
+
+            dialog.show(); // Show the dialog
+        });
+
         logoutButton.setOnClickListener(v -> logout());
+        
 
         // Initialize Firebase again (add these lines)
         mAuth = FirebaseAuth.getInstance();
@@ -110,7 +145,7 @@ public class Profile extends Fragment {
                         String email = documentSnapshot.getString("email");
                         String phone = documentSnapshot.getString("phone");
                         String address = documentSnapshot.getString("address");
-                        String zipcode = documentSnapshot.getString("zipCode");
+                        String zipcode = documentSnapshot.getString("zipcode");
                         String city = documentSnapshot.getString("city");
 
                         // Set TextViews with retrieved data
@@ -131,16 +166,82 @@ public class Profile extends Fragment {
 
 
 
-    private void editAddress() {
+    private void editAddress(String firstName, String lastName, String email, String phone, String address, String zipCode, String city) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userEmail = currentUser.getEmail();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            CollectionReference usersCollection = db.collection("users");
 
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Update user details
+                        usersCollection.document(document.getId()).update(
+                                "firstName", firstName,
+                                "lastName", lastName,
+                                "email", email,
+                                "phone", phone,
+                                "address", address,
+                                "zipCode", zipCode,
+                                "city", city
+                        ).addOnSuccessListener(aVoid -> {
+                            // Update successful
+                            // You can add further handling or notifications here
+                            // For example: Toast.makeText(getApplicationContext(), "Details Updated!", Toast.LENGTH_SHORT).show();
+                        }).addOnFailureListener(e -> {
+                            // Handle failure
+                            // For example: Log.e(TAG, "Error updating document", e);
+                        });
+                    }
+                } else {
+                    // Handle unsuccessful query
+                    // For example: Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            });
+        }
     }
 
 
     private void deleteProfile() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
+        if (currentUser != null) {
+            // User is logged in, proceed with deletion
+            String userEmail = currentUser.getEmail();
+
+            // Deleting user from Firestore
+            CollectionReference usersCollection = db.collection("users");
+            Query query = usersCollection.whereEqualTo("email", userEmail);
+
+            query.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // Delete documents with the matched email
+                        document.getReference().delete();
+                    }
+                } else {
+                    // Handle unsuccessful Firestore query
+                }
+            });
+
+            // Deleting user from Firebase Authentication
+            currentUser.delete().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    firebaseAuth.signOut();
+                    // Navigate back to MainActivity
+                    requireActivity().finish();
+                    // Account deleted successfully
+                } else {
+                    // Handle unsuccessful user deletion from Authentication
+
+                }
+            });
+        }
     }
 
-        private void logout () {
+    private void logout () {
             firebaseAuth.signOut();
             // Navigate back to MainActivity
             requireActivity().finish();
