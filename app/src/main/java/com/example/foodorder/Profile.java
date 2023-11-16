@@ -96,32 +96,6 @@ public class Profile extends Fragment {
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
 
-        // Inside a Fragment
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-
-        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
-        Button btnDelete = dialogView.findViewById(R.id.btnDelete);
-
-        btnCancel.setOnClickListener(v -> {
-            // Dismiss the dialog when Cancel button is clicked
-            dialog.dismiss();
-        });
-
-        btnDelete.setOnClickListener(v -> {
-            // Call the deleteProfile() method when Delete button is clicked
-            deleteProfile(); // Call your deletion logic here
-
-            // Dismiss the dialog after initiating profile deletion
-            dialog.dismiss();
-        });
-
-        dialog.show(); // Show the dialog
-
-
 
         // Initialize Firebase again (add these lines)
         mAuth = FirebaseAuth.getInstance();
@@ -207,6 +181,12 @@ public class Profile extends Fragment {
 
 
     private void deleteProfile() {
+        Button deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
+
+        deleteProfileButton.setOnClickListener(v -> {
+            deleteProfile();
+        });
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -237,7 +217,7 @@ public class Profile extends Fragment {
                     // Account deleted successfully
                 } else {
                     // Handle unsuccessful user deletion from Authentication
-                    // Inside a Fragment
+
                 }
             });
         }
