@@ -1,6 +1,8 @@
 package com.example.foodorder;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,12 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.gson.Gson;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -218,18 +222,41 @@ public class Home extends Fragment {
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString()));
+            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString(), pizza.getPrice()));
         }
+        private void addToCart(Pizza pizza, int quantity, String size, double price) {
+            // Create or access SharedPreferences
+            SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
 
-        private void addToCart(Pizza pizza, int quantity, String size) {
+            // Retrieve existing cart items
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString("cartItems", "");
+            Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
+            ArrayList<CartItem> cartItems = gson.fromJson(json, type);
 
-            // TODO: Add to cart logic
+            // If cartItems is null, create a new ArrayList
+            if (cartItems == null) {
+                cartItems = new ArrayList<>();
+            }
 
-            String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
-            View view = getView();
+            double totalPrice = price*quantity;
+
+            // Add the new item to the cart
+            CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity, totalPrice);
+            cartItems.add(cartItem);
+
+            // Convert cartItems to JSON and save to SharedPreferences
+            String updatedCart = gson.toJson(cartItems);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("cartItems", updatedCart);
+            editor.apply();
+
+            String message = quantity + " " + size + " " + pizza.getItemName() +  "(s) added to cart";
+            View view = getView(); // Make sure to get the appropriate view reference based on your context
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             }
         }
+
     }
 }
