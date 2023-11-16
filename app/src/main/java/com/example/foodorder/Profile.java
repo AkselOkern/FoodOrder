@@ -97,32 +97,6 @@ public class Profile extends Fragment {
         logoutButton.setOnClickListener(v -> logout());
 
 
-        //test deleteProfile
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
-        builder.setView(dialogView);
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
-
-        Button btnCancel = dialog.findViewById(R.id.btnCancel);
-        Button btnDelete = dialog.findViewById(R.id.btnDelete);
-
-        btnCancel.setOnClickListener(v -> {
-            // Dismiss the dialog or handle cancel action
-            dialog.dismiss();
-            // Add any other actions you want for canceling the deletion
-        });
-
-        btnDelete.setOnClickListener(v -> {
-            // Call the deleteProfile() method here
-            deleteProfile();
-            // Dismiss the dialog or handle the UI accordingly
-            dialog.dismiss();
-        });
-
-
         // Initialize Firebase again (add these lines)
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -237,6 +211,33 @@ public class Profile extends Fragment {
                     // Account deleted successfully
                 } else {
                     // Handle unsuccessful user deletion from Authentication
+                    // Inside a Fragment
+
+                    //test deleteProfile
+                    AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                    LayoutInflater inflater = requireActivity().getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.dialog_confirmation, null);
+                    builder.setView(dialogView);
+                    AlertDialog dialog = builder.create();
+
+                    Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+                    Button btnDelete = dialogView.findViewById(R.id.btnDelete);
+
+                    btnCancel.setOnClickListener(v -> {
+                        // Dismiss the dialog when Cancel button is clicked
+                        dialog.dismiss();
+                    });
+
+                    btnDelete.setOnClickListener(v -> {
+                        // Call the deleteProfile() method when Delete button is clicked
+                        deleteProfile(); // Call your deletion logic here
+
+                        // Dismiss the dialog after initiating profile deletion
+                        dialog.dismiss();
+                    });
+
+                    dialog.show(); // Show the dialog
+
                 }
             });
         }
