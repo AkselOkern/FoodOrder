@@ -12,7 +12,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
@@ -21,9 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,10 +36,8 @@ public class Home extends Fragment {
 
     private List<Pizza> pizzaList;
     private PizzaAdapter pizzaAdapter;
-    private SearchView searchView;
 
-    public Home() {
-    }
+    public Home() {}
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -50,7 +46,7 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialize the SearchView
-        searchView = view.findViewById(R.id.searchView);
+        SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -73,6 +69,7 @@ public class Home extends Fragment {
         pizzaAdapter = new PizzaAdapter(pizzaList);
 
         // Set up the RecyclerView with the adapter
+        // https://developer.android.com/develop/ui/views/layout/recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(pizzaAdapter);
 
@@ -100,7 +97,7 @@ public class Home extends Fragment {
     // ViewHolder for each pizza card
     public class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> implements Filterable {
 
-        private List<Pizza> pizzaList;
+        private final List<Pizza> pizzaList;
         private List<Pizza> pizzaListFull;
 
         public PizzaAdapter(List<Pizza> pizzaList) {
@@ -151,6 +148,7 @@ public class Home extends Fragment {
                     return results;
                 }
 
+                @SuppressLint("NotifyDataSetChanged")
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     pizzaList.clear();
@@ -161,6 +159,7 @@ public class Home extends Fragment {
             };
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         public void setFullPizzaList(List<Pizza> pizzaList) {
             this.pizzaListFull = new ArrayList<>(pizzaList);
             notifyDataSetChanged();
@@ -223,6 +222,9 @@ public class Home extends Fragment {
         }
 
         private void addToCart(Pizza pizza, int quantity, String size) {
+
+            // TODO: Add to cart logic
+
             String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
             View view = getView();
             if (view != null) {
