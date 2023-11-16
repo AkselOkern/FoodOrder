@@ -97,7 +97,7 @@ public class Profile extends Fragment {
         logoutButton.setOnClickListener(v -> logout());
 
         //test
-        Button deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
+        deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
 
         deleteProfileButton.setOnClickListener(v -> {
             deleteProfile();
