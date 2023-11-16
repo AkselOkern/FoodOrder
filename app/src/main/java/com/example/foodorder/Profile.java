@@ -81,7 +81,7 @@ public class Profile extends Fragment {
         cityTextView = view.findViewById(R.id.cityTextView);
 
         editAddressButton = view.findViewById(R.id.editAddressButton);
-        deleteProfileButton = view.findViewById(R.id.deleteProfileButton);
+        //deleteProfileButton = view.findViewById(R.id.deleteProfileButton);
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
