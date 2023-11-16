@@ -95,13 +95,7 @@ public class Profile extends Fragment {
                 cityTextView.getText().toString()));
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
-
-        //test
-        deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
-
-        deleteProfileButton.setOnClickListener(v -> {
-            deleteProfile();
-        });
+        
 
 
         // Initialize Firebase again (add these lines)
