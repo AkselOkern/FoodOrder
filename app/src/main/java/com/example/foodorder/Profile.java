@@ -81,7 +81,7 @@ public class Profile extends Fragment {
         cityTextView = view.findViewById(R.id.cityTextView);
 
         editAddressButton = view.findViewById(R.id.editAddressButton);
-        //deleteProfileButton = view.findViewById(R.id.deleteProfileButton);
+        deleteProfileButton = view.findViewById(R.id.deleteProfileButton);
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
@@ -95,6 +95,13 @@ public class Profile extends Fragment {
                 cityTextView.getText().toString()));
         deleteProfileButton.setOnClickListener(v -> deleteProfile());
         logoutButton.setOnClickListener(v -> logout());
+
+        //test
+        Button deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
+
+        deleteProfileButton.setOnClickListener(v -> {
+            deleteProfile();
+        });
 
 
         // Initialize Firebase again (add these lines)
@@ -181,12 +188,6 @@ public class Profile extends Fragment {
 
 
     private void deleteProfile() {
-        Button deleteProfileButton = requireView().findViewById(R.id.deleteProfileButton);
-
-        deleteProfileButton.setOnClickListener(v -> {
-            deleteProfile();
-        });
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         if (currentUser != null) {
