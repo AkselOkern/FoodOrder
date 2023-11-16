@@ -145,7 +145,7 @@ public class Profile extends Fragment {
                         String email = documentSnapshot.getString("email");
                         String phone = documentSnapshot.getString("phone");
                         String address = documentSnapshot.getString("address");
-                        String zipcode = documentSnapshot.getString("zipcode");
+                        String zipcode = documentSnapshot.getString("zipCode");
                         String city = documentSnapshot.getString("city");
 
                         // Set TextViews with retrieved data
