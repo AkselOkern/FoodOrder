@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +35,8 @@ import com.google.gson.Gson;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Home extends Fragment {
@@ -51,6 +56,27 @@ public class Home extends Fragment {
 
         // Initialize the SearchView
         SearchView searchView = view.findViewById(R.id.searchView);
+
+        // Initialize the Spinner for filter options
+        AppCompatSpinner spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.filter_options,
+                android.R.layout.simple_spinner_item
+        );
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFilterOptions.setAdapter(adapter);
+
+        spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Handle filter options here
+                filterPizzaList(position);
+            }
+
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Do nothing
+            }
+        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -98,6 +124,26 @@ public class Home extends Fragment {
         return view;
     }
 
+    // Add a method to handle filter options
+    private void filterPizzaList(int filterOption) {
+        switch (filterOption) {
+            case 0:
+                // Name
+                pizzaAdapter.sortByName();
+                break;
+            case 1:
+                // Price Ascending
+                pizzaAdapter.sortByPriceAscending();
+                break;
+            case 2:
+                // Price Descending
+                pizzaAdapter.sortByPriceDescending();
+                break;
+        }
+    }
+
+
+
     // ViewHolder for each pizza card
     public class PizzaAdapter extends RecyclerView.Adapter<PizzaViewHolder> implements Filterable {
 
@@ -120,6 +166,24 @@ public class Home extends Fragment {
         public void onBindViewHolder(@NonNull PizzaViewHolder holder, int position) {
             Pizza pizza = pizzaList.get(position);
             holder.setPizzaData(pizza);
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        public void sortByName() {
+            pizzaList.sort((p1, p2) -> p1.getItemName().compareToIgnoreCase(p2.getItemName()));
+            notifyDataSetChanged();
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        public void sortByPriceAscending() {
+            pizzaList.sort(Comparator.comparingDouble(Pizza::getPrice));
+            notifyDataSetChanged();
+        }
+
+        @SuppressLint("NotifyDataSetChanged")
+        public void sortByPriceDescending() {
+            pizzaList.sort((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()));
+            notifyDataSetChanged();
         }
 
         @Override
