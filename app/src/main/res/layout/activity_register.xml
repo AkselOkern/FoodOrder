@@ -21,7 +21,8 @@
         android:textColor="@color/primary_100"
 
         android:layout_marginBottom="32dp"
-        style="@style/TextAppearance.MaterialComponents.Headline5"/>
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        tools:ignore="HardcodedText" />
 
     <!-- First Name -->
     <com.google.android.material.textfield.TextInputLayout
@@ -31,7 +32,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="First Name">
+        android:hint="First Name"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/firstNameEditText"
@@ -48,7 +50,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="Last Name">
+        android:hint="Last Name"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lastNameEditText"
@@ -65,7 +68,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="Email">
+        android:hint="Email"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
@@ -82,7 +86,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="Phone">
+        android:hint="Phone"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneEditText"
@@ -99,7 +104,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="Address">
+        android:hint="Address"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addressEditText"
@@ -116,7 +122,8 @@
         android:layout_height="wrap_content"
         app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
-        android:hint="Create Password">
+        android:hint="Create Password"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
