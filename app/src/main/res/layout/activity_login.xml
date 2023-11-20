@@ -19,42 +19,42 @@
         android:textStyle="bold"
         android:textColor="@color/text_100"
         android:layout_marginBottom="32dp"
-        style="@style/TextAppearance.MaterialComponents.Headline5"
         tools:ignore="HardcodedText" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:helperTextEnabled="true"
+        app:helperText="Email is required"
         android:hint="Email"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
         tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:helperTextEnabled="true"
+        app:helperText="Password is required"
         android:hint="Password"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
+        app:endIconMode="password_toggle"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+
         tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
