@@ -66,6 +66,5 @@
         android:backgroundTint="@color/primary_100"
         android:text="Login"
         android:textColor="#FFFFFF"
-        style="@style/Widget.MaterialComponents.Button"
         tools:ignore="HardcodedText" />
 </LinearLayout>
