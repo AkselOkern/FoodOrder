@@ -53,11 +53,7 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        // Initialize the SearchView
         SearchView searchView = view.findViewById(R.id.searchView);
-
-        // Initialize the Spinner for filter options
         AppCompatSpinner spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
@@ -69,7 +65,6 @@ public class Home extends Fragment {
 
         spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle filter options here
                 filterPizzaList(position);
             }
 
@@ -124,19 +119,15 @@ public class Home extends Fragment {
         return view;
     }
 
-    // Add a method to handle filter options
     private void filterPizzaList(int filterOption) {
         switch (filterOption) {
             case 0:
-                // Name
                 pizzaAdapter.sortByName();
                 break;
             case 1:
-                // Price Ascending
                 pizzaAdapter.sortByPriceAscending();
                 break;
             case 2:
-                // Price Descending
                 pizzaAdapter.sortByPriceDescending();
                 break;
         }
@@ -316,7 +307,7 @@ public class Home extends Fragment {
             editor.apply();
 
             String message = quantity + " " + size + " " + pizza.getItemName() +  "(s) added to cart";
-            View view = getView(); // Make sure to get the appropriate view reference based on your context
+            View view = getView();
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
             }
