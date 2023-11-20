@@ -5,4 +5,9 @@
         <item>Medium</item>
         <item>Large</item>
     </array>
+        <string-array name="filter_options">
+            <item>Name</item>
+            <item>Price Ascending</item>
+            <item>Price Descending</item>
+        </string-array>
 </resources>
