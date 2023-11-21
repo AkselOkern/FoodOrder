@@ -24,7 +24,7 @@
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewItemName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,14 +33,28 @@
             android:layout_marginTop="8dp"
             tools:ignore="HardcodedText" />
 
-        <Spinner
-            android:id="@+id/spinnerPizzaSize"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menu"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:entries="@array/pizza_sizes" />
+            android:hint="Pizza Size"
+            tools:ignore="HardcodedText">
 
-        <TextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/spinnerPizzaSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                app:simpleItems="@array/pizza_sizes"
+                app:layout_constraintTop_toBottomOf="@+id/menu"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,13 +72,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDecrease"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="40dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:text="-"
                 tools:ignore="HardcodedText" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/textViewQuantity"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -74,15 +87,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnIncrease"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="40dp"
+                android:layout_width="60dp"
                 android:layout_height="40dp"
                 android:text="+"
                 tools:ignore="HardcodedText" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddToCart"
-                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

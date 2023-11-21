@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.common.reflect.TypeToken;
@@ -38,6 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class Home extends Fragment {
 
@@ -46,55 +48,36 @@ public class Home extends Fragment {
     private List<Pizza> pizzaList;
     private PizzaAdapter pizzaAdapter;
 
-    public Home() {}
-
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        SearchView searchView = view.findViewById(R.id.searchView);
-        AppCompatSpinner spinnerFilterOptions = view.findViewById(R.id.spinnerFilterOptions);
+        TextInputLayout textInputLayout = view.findViewById(R.id.menu);
+        MaterialAutoCompleteTextView spinnerFilterOptions = textInputLayout.findViewById(R.id.spinnerFilterOptions);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 requireContext(),
                 R.array.filter_options,
-                android.R.layout.simple_spinner_item
+                android.R.layout.simple_dropdown_item_1line
         );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerFilterOptions.setAdapter(adapter);
 
-        spinnerFilterOptions.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+        spinnerFilterOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 filterPizzaList(position);
             }
-
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing
-            }
-        });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // Perform search logic here if needed
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Log.d(TAG, "Query Text Changed: " + newText);
-                // Filter the pizzaList based on the search query
-                pizzaAdapter.getFilter().filter(newText);
-                return false;
-            }
         });
 
+        SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         pizzaList = new ArrayList<>();
         pizzaAdapter = new PizzaAdapter(pizzaList);
 
         // Set up the RecyclerView with the adapter
-        // https://developer.android.com/develop/ui/views/layout/recyclerview
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(pizzaAdapter);
 
@@ -113,6 +96,22 @@ public class Home extends Fragment {
             } else {
                 Toast.makeText(getActivity(), "Error fetching pizza items", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Error fetching pizza items", task.getException());
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Perform search logic here if needed
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d(TAG, "Query Text Changed: " + newText);
+                // Filter the pizzaList based on the search query
+                pizzaAdapter.getFilter().filter(newText);
+                return false;
             }
         });
 
@@ -234,7 +233,7 @@ public class Home extends Fragment {
         private final Button btnDecrease;
         private final Button btnIncrease;
         private final Button btnAddToCart;
-        private final androidx.appcompat.widget.AppCompatSpinner spinnerPizzaSize;
+        private final MaterialAutoCompleteTextView spinnerPizzaSize;
 
         public PizzaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -259,8 +258,21 @@ public class Home extends Fragment {
             textViewItemName.setText(pizza.getItemName());
             textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice()));
 
-            int sizePosition = Arrays.asList(getResources().getStringArray(R.array.pizza_sizes)).indexOf(pizza.getSize());
-            spinnerPizzaSize.setSelection(sizePosition);
+            ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(
+                    itemView.getContext(),
+                    R.array.pizza_sizes,
+                    android.R.layout.simple_dropdown_item_1line
+            );
+            spinnerPizzaSize.setAdapter(sizeAdapter);
+
+            int sizePosition = Arrays.asList(itemView.getResources().getStringArray(R.array.pizza_sizes)).indexOf(pizza.getSize());
+
+            // Set the default selection to the first item if not found
+            if (sizePosition == -1 && sizeAdapter.getCount() > 0) {
+                spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(0)).toString(), false);
+            } else if (sizePosition != -1) {
+                spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(sizePosition)).toString(), false); // Set initial selection without triggering listener
+            }
 
             final int[] quantity = {1};
             textViewQuantity.setText(String.valueOf(quantity[0]));
@@ -277,7 +289,7 @@ public class Home extends Fragment {
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getSelectedItem().toString(), pizza.getPrice()));
+            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getText().toString(), pizza.getPrice()));
         }
         private void addToCart(Pizza pizza, int quantity, String size, double price) {
             // Create or access SharedPreferences
