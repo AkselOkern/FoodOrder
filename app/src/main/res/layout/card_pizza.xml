@@ -13,16 +13,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageViewPizza"
-            android:layout_width="fill_parent"
-            android:layout_height="150dp"
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/placeholder_image_loading"
             android:scaleType="centerCrop"
             android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewItemName"
@@ -33,27 +39,6 @@
             android:layout_marginTop="8dp"
             tools:ignore="HardcodedText" />
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/menu"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Pizza Size"
-            tools:ignore="HardcodedText">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/spinnerPizzaSize"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                app:simpleItems="@array/pizza_sizes"
-                app:layout_constraintTop_toBottomOf="@+id/menu"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textViewPrice"
             android:layout_width="match_parent"
@@ -63,12 +48,34 @@
             android:textSize="16sp"
             android:layout_marginTop="4dp"
             tools:ignore="HardcodedText" />
+    </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/menu"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:hint="Pizza Size"
+                tools:ignore="HardcodedText">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/spinnerPizzaSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/pizza_sizes"
+                    app:layout_constraintTop_toBottomOf="@+id/menu"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDecrease"
@@ -91,6 +98,15 @@
                 android:layout_height="40dp"
                 android:text="+"
                 tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddToCart"
@@ -100,6 +116,7 @@
                 android:text="Add to Cart"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
     </LinearLayout>
