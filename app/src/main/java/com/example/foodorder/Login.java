@@ -29,6 +29,14 @@ public class Login extends AppCompatActivity {
         // Initialize Firebase Authentication
         auth = FirebaseAuth.getInstance();
 
+        // Check if the user is already signed in
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already signed in, redirect to the main activity
+            startActivity(new Intent(Login.this, Hovedside.class));
+            finish(); // Close the login activity
+        }
+
         // Initialize UI elements
         emailInputLayout = findViewById(R.id.emailInputLayout);
         passwordInputLayout = findViewById(R.id.passwordInputLayout);
@@ -48,7 +56,7 @@ public class Login extends AppCompatActivity {
         String password = passwordInputLayout.getEditText().getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showSnackbar("Please fill all the entries");
+            showSnackbar("Please fill in all the entries");
             return;
         }
 
@@ -90,4 +98,3 @@ public class Login extends AppCompatActivity {
         snackbar.show();
     }
 }
-//commit
