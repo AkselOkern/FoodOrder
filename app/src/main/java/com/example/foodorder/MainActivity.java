@@ -11,21 +11,36 @@ import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button registerButton;
+
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Initialize Firebase Authentication
+        auth = FirebaseAuth.getInstance();
+
+        // Check if the user is already signed in
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already signed in, redirect to the main activity
+            startActivity(new Intent(MainActivity.this, Hovedside.class));
+            finish(); // Close the main activity
+        }
+
         // Initialize UI elements
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         VideoView videoView = findViewById(R.id.backgroundVideo);
-
 
         String videoUrl = "https://cdn.lystad.io/foodorder/pizza_home.mp4";
         Uri uri = Uri.parse(videoUrl);
@@ -40,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
             // Restart the video
             videoView.start();
         });
-
-
 
         // Set click listener for the Log In button
         loginButton.setOnClickListener(v -> {
@@ -58,5 +71,3 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
-
-
