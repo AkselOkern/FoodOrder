@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +92,7 @@ public class Cart extends Fragment {
 
                             // Add cart items to order
                             ArrayList<Map<String, Object>> cartItemsData = new ArrayList<>();
+                            double totalPrice = 0.0; // Initialize total price
                             for (CartItem cartItem : cartItemsList) {
                                 Map<String, Object> itemData = new HashMap<>();
                                 itemData.put("itemName", cartItem.getItemName());
@@ -98,8 +100,14 @@ public class Cart extends Fragment {
                                 itemData.put("quantity", cartItem.getQuantity());
                                 itemData.put("price", cartItem.getItemPrice());
                                 cartItemsData.add(itemData);
+
+                                totalPrice += (cartItem.getItemPrice());
                             }
                             orderData.put("cartItems", cartItemsData);
+                            orderData.put("totalPrice", totalPrice);
+
+                            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                            orderData.put("timestamp", timestamp);
 
                             // Save order details to the "orders" collection
                             CollectionReference ordersCollection = db.collection("orders");
