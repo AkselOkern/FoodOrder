@@ -107,7 +107,7 @@ public class Cart extends Fragment {
                             orderData.put("totalPrice", totalPrice);
 
                             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                            orderData.put("timestamp", timestamp);
+                            orderData.put("date", timestamp);
 
                             // Save order details to the "orders" collection
                             CollectionReference ordersCollection = db.collection("orders");
