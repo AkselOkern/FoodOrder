@@ -18,21 +18,35 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Cart extends Fragment {
 
     private ArrayList<CartItem> cartItemsList;
     private CartAdapter cartAdapter;
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
+
+        // Initialize FirebaseAuth and FirebaseFirestore
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         // Initialize SharedPreferences
         sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
@@ -50,13 +64,63 @@ public class Cart extends Fragment {
         listViewCartItems.setAdapter(cartAdapter);
 
         btnPlaceOrder.setOnClickListener(v -> {
-            // Place order logic here
-            // Implement your logic to process the order
+            // Retrieve user details from Firebase users collection
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                String userEmail = currentUser.getEmail();
 
-            // Clear the cart items list
-            clearCartItems();
-            cartAdapter.notifyDataSetChanged();
-            Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                CollectionReference usersCollection = db.collection("users");
+                Query query = usersCollection.whereEqualTo("email", userEmail);
+
+                query.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            String firstName = documentSnapshot.getString("firstName");
+                            String phone = documentSnapshot.getString("phone");
+                            String address = documentSnapshot.getString("address");
+                            String zipcode = documentSnapshot.getString("zipCode");
+                            String city = documentSnapshot.getString("city");
+
+                            // Construct order object or map with required details
+                            Map<String, Object> orderData = new HashMap<>();
+                            orderData.put("firstName", firstName);
+                            orderData.put("phone", phone);
+                            orderData.put("address", address);
+                            orderData.put("zipcode", zipcode);
+                            orderData.put("city", city);
+
+                            // Add cart items to order
+                            ArrayList<Map<String, Object>> cartItemsData = new ArrayList<>();
+                            for (CartItem cartItem : cartItemsList) {
+                                Map<String, Object> itemData = new HashMap<>();
+                                itemData.put("itemName", cartItem.getItemName());
+                                itemData.put("size", cartItem.getSize());
+                                itemData.put("quantity", cartItem.getQuantity());
+                                itemData.put("price", cartItem.getItemPrice());
+                                cartItemsData.add(itemData);
+                            }
+                            orderData.put("cartItems", cartItemsData);
+
+                            // Save order details to the "orders" collection
+                            CollectionReference ordersCollection = db.collection("orders");
+                            ordersCollection.add(orderData)
+                                    .addOnSuccessListener(documentReference -> {
+                                        // Handle successful order placement
+                                        clearCartItems();
+                                        cartAdapter.notifyDataSetChanged();
+                                        Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Handle order placement failure
+                                        Toast.makeText(getContext(), "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    } else {
+                        // Handle errors while fetching user data
+                        Toast.makeText(getContext(), "Failed to retrieve user data. Please try again.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
 
         return view;
@@ -119,10 +183,27 @@ public class Cart extends Fragment {
                 itemSizeTextView.setText("Size: " + currentItem.getSize());
                 itemQuantityTextView.setText("Quantity: " + currentItem.getQuantity());
                 itemPriceTextView.setText("Price: "+ currentItem.getItemPrice());
+
+                // Handle delete button click
+                Button deleteButton = listItem.findViewById(R.id.btnDeleteItem);
+                deleteButton.setOnClickListener(v -> {
+                    // Remove item from the list and update the adapter
+                    cartItemsList.remove(position);
+                    notifyDataSetChanged();
+                    saveCartItemsToSharedPreferences(); // Save updated cart items to SharedPreferences
+                });
             }
 
             return listItem;
         }
-    }
 
+        // Add a method to save updated cart items to SharedPreferences
+        private void saveCartItemsToSharedPreferences() {
+            SharedPreferences.Editor editor = context.getSharedPreferences("CartPreferences", Context.MODE_PRIVATE).edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(cartItemsList);
+            editor.putString("cartItems", json);
+            editor.apply();
+        }
+    }
 }
