@@ -126,7 +126,6 @@ public class Cart extends Fragment {
         btnPlaceOrder.setOnClickListener(v -> {
             if (!cartItemsList.isEmpty()) {
                 placeOrder();
-                updateTotalPrice();
             } else {
                 Toast.makeText(getContext(), "Your cart is empty!", Toast.LENGTH_SHORT).show();
             }
@@ -251,6 +250,7 @@ public class Cart extends Fragment {
                                     clearCartItems();
                                     cartAdapter.notifyDataSetChanged();
                                     Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                                    textViewTotalPrice.setText(String.format("Sum: %.2fkr", 0.0));
                                 })
                                 .addOnFailureListener(e -> {
                                     // Handle order placement failure
