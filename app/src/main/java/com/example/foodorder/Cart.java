@@ -60,6 +60,7 @@ public class Cart extends Fragment {
     private String orderType = "Pickup"; // Default order type
     private SupportMapFragment supportMapFragment;
     private GoogleMap googleMap;
+    private TextView textViewTotalPrice;
     private static final int LOCATION_REQUEST_CODE = 100; // Define the location request code
 
     @Override
@@ -69,6 +70,7 @@ public class Cart extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
+        textViewTotalPrice = view.findViewById(R.id.textViewTotalPrice);
 
         Button btnPickup = view.findViewById(R.id.btnPickup);
         Button btnDelivery = view.findViewById(R.id.btnDelivery);
@@ -81,16 +83,18 @@ public class Cart extends Fragment {
             orderType = "Pickup";
             btnPickup.setSelected(true);
             btnDelivery.setSelected(false);
-            btnPickup.setTextColor(Color.RED); // Set text color darker for selected button
-            btnDelivery.setTextColor(Color.BLACK); // Reset text color for unselected button
+            btnPickup.setTextColor(Color.RED);
+            btnDelivery.setTextColor(Color.BLACK);
+            updateMap();
         });
 
         btnDelivery.setOnClickListener(v -> {
             orderType = "Delivery";
             btnDelivery.setSelected(true);
             btnPickup.setSelected(false);
-            btnDelivery.setTextColor(Color.RED); // Set text color darker for selected button
-            btnPickup.setTextColor(Color.BLACK); // Reset text color for unselected button
+            btnDelivery.setTextColor(Color.RED);
+            btnPickup.setTextColor(Color.BLACK);
+            updateMap();
         });
 
         // Initialize Map
@@ -103,50 +107,20 @@ public class Cart extends Fragment {
             @Override
             public void onMapReady(@NonNull GoogleMap map) {
                 googleMap = map;
-                if (orderType.equals("Delivery")) {
-                    // Logic to display user's location for delivery
-                    // Check and request location permissions if not granted already
-                    // Initialize FusedLocationProviderClient
-                    FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
-
-                    // Check if location permissions are granted
-                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                        // Get the last known location of the user
-                        fusedLocationClient.getLastLocation()
-                                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
-                                    @Override
-                                    public void onSuccess(Location location) {
-                                        if (location != null) {
-                                            // Display user's current location on the map
-                                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                            googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
-                                        }
-                                    }
-                                });
-                    } else {
-                        // Request location permissions if not granted
-                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
-                    }
-                } else if (orderType.equals("Pickup")) {
-                    // Logic to set a specific coordinate for pickup
-                    LatLng pickupCoordinate = new LatLng(60.1673, 10.2461);
-                    googleMap.addMarker(new MarkerOptions().position(pickupCoordinate).title("Pickup Location"));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoordinate, 15));
-                }
+                updateMap();
             }
         });
 
         TextView textViewCartTitle = view.findViewById(R.id.textViewCartTitle);
         ListView listViewCartItems = view.findViewById(R.id.listViewCartItems);
         btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
-        TextView textViewTotalPrice = view.findViewById(R.id.textViewTotalPrice);
 
         cartItemsList = getCartItemsFromSharedPreferences();
         if (cartItemsList == null) {
             cartItemsList = new ArrayList<>();
         }
-        cartAdapter = new CartAdapter(getContext(), cartItemsList);
+        cartAdapter = new CartAdapter(getContext(), cartItemsList, this);
+
         listViewCartItems.setAdapter(cartAdapter);
 
         btnPlaceOrder.setOnClickListener(v -> {
@@ -165,6 +139,14 @@ public class Cart extends Fragment {
     }
 
 
+    private void updateTotalPrice() {
+        double totalPrice = calculateTotalPrice(cartItemsList);
+        if (textViewTotalPrice != null) {
+            textViewTotalPrice.setText(String.format("Sum: %.2fkr", totalPrice));
+        }
+    }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -177,6 +159,37 @@ public class Cart extends Fragment {
                 btnPlaceOrder.setEnabled(true);
             } else {
                 btnPlaceOrder.setEnabled(false);
+            }
+        }
+    }
+
+    private void updateMap() {
+        if (googleMap != null) {
+            googleMap.clear(); // Clear previous markers
+
+            if (orderType.equals("Delivery")) {
+                // Logic to display user's location for delivery
+                FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                            }
+                        }
+                    });
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+                }
+            } else if (orderType.equals("Pickup")) {
+                // Logic to set a specific coordinate for pickup
+                LatLng pickupCoordinate = new LatLng(60.1649342, 10.2548346);
+                googleMap.addMarker(new MarkerOptions().position(pickupCoordinate).title("Luigi's pizzeria"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoordinate, 15));
             }
         }
     }
@@ -237,6 +250,7 @@ public class Cart extends Fragment {
                                     clearCartItems();
                                     cartAdapter.notifyDataSetChanged();
                                     Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                                    textViewTotalPrice.setText(String.format("Sum: %.2fkr", 0.0));
                                 })
                                 .addOnFailureListener(e -> {
                                     // Handle order placement failure
@@ -251,11 +265,13 @@ public class Cart extends Fragment {
         }
     }
 
+
     // Method to retrieve cart items from SharedPreferences
     private ArrayList<CartItem> getCartItemsFromSharedPreferences() {
         Gson gson = new Gson();
         String json = sharedPreferences.getString("cartItems", "");
-        Type type = new TypeToken<ArrayList<CartItem>>() {}.getType();
+        Type type = new TypeToken<ArrayList<CartItem>>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 
@@ -267,6 +283,7 @@ public class Cart extends Fragment {
             cartItemsList.clear();
         }
     }
+
     private double calculateTotalPrice(ArrayList<CartItem> cartItemsList) {
         double total = 0.0;
         for (CartItem cartItem : cartItemsList) {
@@ -276,15 +293,17 @@ public class Cart extends Fragment {
     }
 
     private static class CartAdapter extends ArrayAdapter<CartItem> {
-
         private final ArrayList<CartItem> cartItemsList;
         private final Context context;
+        private final Cart parentCart; // Reference to the parent Cart class
 
-        public CartAdapter(Context context, ArrayList<CartItem> cartItemsList) {
+        public CartAdapter(Context context, ArrayList<CartItem> cartItemsList, Cart parentCart) {
             super(context, 0, cartItemsList);
             this.context = context;
             this.cartItemsList = cartItemsList;
+            this.parentCart = parentCart; // Assign the reference to the parent Cart
         }
+
 
         @NonNull
         @Override
@@ -313,6 +332,10 @@ public class Cart extends Fragment {
                     cartItemsList.remove(position);
                     notifyDataSetChanged();
                     saveCartItemsToSharedPreferences();
+                    // Now, you can access updateTotalPrice() method using the parentCart reference
+                    if (parentCart != null) {
+                        parentCart.updateTotalPrice();
+                    }
                 });
             }
 
