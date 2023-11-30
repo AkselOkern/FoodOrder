@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerInParent="true"
+    android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/firstNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textSize="16dp"
         android:text="First Name" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/lastNameTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/firstNameTextView"
         android:layout_marginTop="8dp"
         android:text="Last Name"
+        android:textSize="16dp"
         android:gravity="center"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/emailTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lastNameTextView"
         android:layout_marginTop="8dp"
         android:text="Email"
+        android:textSize="16dp"
         android:gravity="center"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/phoneTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/emailTextView"
         android:layout_marginTop="8dp"
         android:text="Phone"
+        android:textSize="16dp"
         android:gravity="center"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/addressTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/phoneTextView"
         android:layout_marginTop="8dp"
         android:text="Address"
+        android:textSize="16dp"
         android:gravity="center"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/zipcodeTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addressTextView"
         android:layout_marginTop="8dp"
         android:text="Zipcode"
+        android:textSize="16dp"
         android:gravity="center"/>
 
     <TextView
         android:id="@+id/cityTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/zipcodeTextView"
         android:layout_marginTop="8dp"
         android:text="City"
+        android:textSize="16dp"
         android:gravity="center"/>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/editAddressButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cityTextView"
-        android:layout_marginTop="19dp"
-        android:gravity="center"
+        android:layout_marginTop="16dp"
         android:text="Edit Address" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteProfileButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editAddressButton"
-        android:layout_marginTop="11dp"
-        android:gravity="center"
+        android:layout_marginTop="8dp"
         android:text="Delete Profile" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/deleteProfileButton"
         android:layout_marginTop="8dp"
-        android:text="Logout"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:gravity="center"/>
+        android:text="Logout">
+    </com.google.android.material.button.MaterialButton>
 
-</RelativeLayout>
-
-
+</LinearLayout>
