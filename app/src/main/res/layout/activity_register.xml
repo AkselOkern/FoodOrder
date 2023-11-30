@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp"
     android:background="@color/bg_100"
     tools:context=".RegistrationActivity">
@@ -14,24 +15,19 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:text="Register"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="@color/primary_100"
-
         android:layout_marginBottom="32dp"
-        style="@style/TextAppearance.MaterialComponents.Headline5"/>
+        tools:ignore="HardcodedText" />
 
     <!-- First Name -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/firstNameInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="First Name">
+        android:hint="First Name"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/firstNameEditText"
@@ -43,12 +39,10 @@
     <!-- Last Name -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/lastNameInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Last Name">
+        android:hint="Last Name"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/lastNameEditText"
@@ -60,12 +54,10 @@
     <!-- Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Email">
+        android:hint="Email"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditText"
@@ -77,12 +69,10 @@
     <!-- Phone -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/phoneInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Phone">
+        android:hint="Phone"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phoneEditText"
@@ -94,12 +84,10 @@
     <!-- Address -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/addressInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Address">
+        android:hint="Address"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/addressEditText"
@@ -111,29 +99,30 @@
     <!-- Password -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Create Password">
+        android:hint="Create Password"
+        app:endIconMode="password_toggle"
+        app:counterMaxLength="20"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Confirm Password -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/confirmPasswordInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
-        android:hint="Confirm Password">
+        app:endIconMode="password_toggle"
+        app:counterMaxLength="20"
+        android:hint="Confirm Password"
+        tools:ignore="HardcodedText">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/confirmPasswordEditText"
@@ -145,11 +134,8 @@
     <!-- Zip Code -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/zipCodeInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
-        app:hintTextColor="@color/text_100"
         android:hint="Zip Code">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -162,10 +148,8 @@
     <!-- City -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/cityInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:boxBackgroundColor="@color/bg_200"
         app:hintTextColor="@color/text_100"
         android:hint="City">
 
@@ -182,8 +166,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/primary_100"
         android:text="Register"
         android:textColor="#FFFFFF"
-        style="@style/Widget.MaterialComponents.Button"/>
+        />
 </LinearLayout>

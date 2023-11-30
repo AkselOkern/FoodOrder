@@ -1,57 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:padding="16dp"
-    android:background="@color/bg_100"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Food Order"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_100"
-        android:layout_marginBottom="24dp"
-        style="@style/TextAppearance.AppCompat.Headline"
-        tools:ignore="HardcodedText" />
+    <!-- VideoView for the background video -->
+    <VideoView
+        android:id="@+id/backgroundVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <com.google.android.material.button.MaterialButton
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
-        android:textColor="@color/primary_300"
-        android:textSize="20sp"
-        android:backgroundTint="@color/primary_100"
-        android:layout_marginBottom="16dp"
-        android:id="@+id/loginButton"
-        style="@style/Widget.MaterialComponents.Button"
-        tools:ignore="HardcodedText" />
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        android:id="@+id/linearLayout"
+        android:layout_alignParentBottom="true">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not a user yet? Register here..."
-        android:textSize="14sp"
-        android:textColor="@color/text_200"
-        android:layout_marginBottom="16dp"
-        style="@style/TextAppearance.AppCompat.Body1"
-        tools:ignore="HardcodedText" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Luigi's Pizza"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="24dp"
+            tools:ignore="HardcodedText" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register"
-        android:textColor="@color/primary_300"
-        android:textSize="20sp"
-        android:id="@+id/registerButton"
-        android:backgroundTint="@color/primary_100"
-        style="@style/Widget.MaterialComponents.Button"
-        tools:ignore="HardcodedText" />
-</LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log In"
+                android:textColor="@color/primary_300"
+                android:textSize="20sp"
+                android:backgroundTint="@color/primary_100"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/loginButton"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not a user yet? Register here..."
+                android:textSize="14sp"
+                android:layout_marginBottom="16dp"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center"
+                style="@style/TextAppearance.AppCompat.Body1"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textColor="@color/primary_300"
+                android:textSize="20sp"
+                android:id="@+id/registerButton"
+                android:backgroundTint="@color/primary_100"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
