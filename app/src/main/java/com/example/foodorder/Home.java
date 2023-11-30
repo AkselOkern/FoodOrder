@@ -64,13 +64,7 @@ public class Home extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerFilterOptions.setAdapter(adapter);
 
-        spinnerFilterOptions.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                filterPizzaList(position);
-            }
-        });
-
+        spinnerFilterOptions.setOnItemClickListener((parent, view1, position, id) -> filterPizzaList(position));
         SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -102,7 +96,6 @@ public class Home extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // Perform search logic here if needed
                 return false;
             }
 
@@ -148,30 +141,35 @@ public class Home extends Fragment {
         @NonNull
         @Override
         public PizzaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            // Inflate the layout for each pizza card
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_pizza, parent, false);
             return new PizzaViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull PizzaViewHolder holder, int position) {
+            // Set the data for each pizza card
             Pizza pizza = pizzaList.get(position);
             holder.setPizzaData(pizza);
         }
 
         @SuppressLint("NotifyDataSetChanged")
         public void sortByName() {
+            // Sort the pizzaList by name
             pizzaList.sort((p1, p2) -> p1.getItemName().compareToIgnoreCase(p2.getItemName()));
             notifyDataSetChanged();
         }
 
         @SuppressLint("NotifyDataSetChanged")
         public void sortByPriceAscending() {
+            // Sort the pizzaList by price
             pizzaList.sort(Comparator.comparingDouble(Pizza::getPrice));
             notifyDataSetChanged();
         }
 
         @SuppressLint("NotifyDataSetChanged")
         public void sortByPriceDescending() {
+            // Sort the pizzaList by price
             pizzaList.sort((p1, p2) -> Double.compare(p2.getPrice(), p1.getPrice()));
             notifyDataSetChanged();
         }
@@ -184,17 +182,21 @@ public class Home extends Fragment {
         @NonNull
         @Override
         public Filter getFilter() {
+            // Filter the pizzaList based on the search query
             return new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     List<Pizza> filteredList = new ArrayList<>();
 
                     if (constraint == null || constraint.length() == 0) {
+                        // If the search query is empty, show all items
                         filteredList.addAll(pizzaListFull);
                     } else {
+                        // Filter the pizzaList based on the search query
                         String filterPattern = constraint.toString().toLowerCase().trim();
 
                         for (Pizza pizza : pizzaListFull) {
+                            // Filter by name
                             if (pizza.getItemName().toLowerCase().contains(filterPattern)) {
                                 filteredList.add(pizza);
                             }
@@ -209,6 +211,7 @@ public class Home extends Fragment {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
+                    // Update the pizzaList with the filtered results
                     pizzaList.clear();
                     pizzaList.addAll((List<Pizza>) results.values);
                     notifyDataSetChanged();
@@ -219,12 +222,14 @@ public class Home extends Fragment {
 
         @SuppressLint("NotifyDataSetChanged")
         public void setFullPizzaList(List<Pizza> pizzaList) {
+            // Update the full pizza list
             this.pizzaListFull = new ArrayList<>(pizzaList);
             notifyDataSetChanged();
         }
     }
 
     public class PizzaViewHolder extends RecyclerView.ViewHolder {
+        // ViewHolder for each pizza card
 
         private final ImageView imageViewPizza;
         private final TextView textViewItemName;
@@ -249,16 +254,18 @@ public class Home extends Fragment {
 
         @SuppressLint("DefaultLocale")
         public void setPizzaData(Pizza pizza) {
-            Glide.with(itemView.getContext())
-                    .load(pizza.getImagePath())
-                    .placeholder(R.drawable.placeholder_image_loading)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageViewPizza);
+            // Set the data for each pizza card
+            Glide.with(itemView.getContext()) // Load the pizza image
+                    .load(pizza.getImagePath()) // Load the pizza image
+                    .placeholder(R.drawable.placeholder_image_loading) // Set a placeholder while loading
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image
+                    .into(imageViewPizza); // Set the image to the ImageView
 
-            textViewItemName.setText(pizza.getItemName());
-            textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice()));
+            textViewItemName.setText(pizza.getItemName()); // Set the pizza name
+            textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice())); // Format the price to 2 decimal places
 
             ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(
+                    // Set the pizza size dropdown
                     itemView.getContext(),
                     R.array.pizza_sizes,
                     android.R.layout.simple_dropdown_item_1line
@@ -269,8 +276,10 @@ public class Home extends Fragment {
 
             // Set the default selection to the first item if not found
             if (sizePosition == -1 && sizeAdapter.getCount() > 0) {
+                // Set the default selection to the first item if not found
                 spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(0)).toString(), false);
             } else if (sizePosition != -1) {
+                // Set the default selection to the pizza size if found
                 spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(sizePosition)).toString(), false); // Set initial selection without triggering listener
             }
 
@@ -278,6 +287,7 @@ public class Home extends Fragment {
             textViewQuantity.setText(String.valueOf(quantity[0]));
 
             btnDecrease.setOnClickListener(v -> {
+                // Decrease the quantity
                 if (quantity[0] > 1) {
                     quantity[0]--;
                     textViewQuantity.setText(String.valueOf(quantity[0]));
@@ -285,11 +295,12 @@ public class Home extends Fragment {
             });
 
             btnIncrease.setOnClickListener(v -> {
+                // Increase the quantity
                 quantity[0]++;
                 textViewQuantity.setText(String.valueOf(quantity[0]));
             });
 
-            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getText().toString(), pizza.getPrice()));
+            btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getText().toString(), pizza.getPrice())); // Add the pizza to cart
         }
         private void addToCart(Pizza pizza, int quantity, String size, double price) {
             // Create or access SharedPreferences
@@ -306,7 +317,16 @@ public class Home extends Fragment {
                 cartItems = new ArrayList<>();
             }
 
-            double totalPrice = price*quantity;
+            // Calculate the total price based on the pizza size
+            // We did not have time to implement the logic for calculating the price based on the pizza size
+            double totalPrice;
+            if (size.equals("Medium")) {
+                totalPrice = price * 1.5 * quantity;
+            } else if (size.equals("Large")) {
+                totalPrice = price * 2.5 * quantity;
+            } else {
+                totalPrice = price * quantity;
+            }
 
             // Add the new item to the cart
             CartItem cartItem = new CartItem(pizza.getItemName(), size, quantity, totalPrice);
@@ -318,7 +338,7 @@ public class Home extends Fragment {
             editor.putString("cartItems", updatedCart);
             editor.apply();
 
-            String message = quantity + " " + size + " " + pizza.getItemName() +  "(s) added to cart";
+            String message = quantity + " " + size + " " + pizza.getItemName() + "(s) added to cart";
             View view = getView();
             if (view != null) {
                 Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
