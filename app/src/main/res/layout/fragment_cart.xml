@@ -13,23 +13,31 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+        <Button
             android:id="@+id/btnPickup"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Pickup"
             tools:ignore="HardcodedText" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/btnDelivery"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Delivery"
             tools:ignore="HardcodedText" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    </LinearLayout>
+</LinearLayout>
+
 
     <!-- Map Container -->
     <FrameLayout
