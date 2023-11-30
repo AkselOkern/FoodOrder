@@ -85,14 +85,47 @@ public class Profile extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
-        editAddressButton.setOnClickListener(v -> editAddress(
-                firstNameTextView.getText().toString(),
-                lastNameTextView.getText().toString(),
-                emailTextView.getText().toString(),
-                phoneTextView.getText().toString(),
-                addressTextView.getText().toString(),
-                zipcodeTextView.getText().toString(),
-                cityTextView.getText().toString()));
+        editAddressButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_edit_address, null);
+                builder.setView(dialogView);
+                AlertDialog dialog = builder.create();
+
+                TextInputEditText editAddress = dialogView.findViewById(R.id.addressEditText);
+                TextInputEditText editZipcode = dialogView.findViewById(R.id.zipcodeEditText);
+                TextInputEditText editCity = dialogView.findViewById(R.id.cityEditText);
+
+                // Set initial values if needed
+                editAddress.setText(addressTextView.getText().toString());
+                editZipcode.setText(zipcodeTextView.getText().toString());
+                editCity.setText(cityTextView.getText().toString());
+
+                Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
+                Button btnSave = dialogView.findViewById(R.id.btnSave);
+
+                btnCancel.setOnClickListener(cancelView -> {
+                    // Dismiss the dialog when Cancel button is clicked
+                    dialog.dismiss();
+                });
+
+                btnSave.setOnClickListener(saveView -> {
+                    // Perform save action here, e.g., update user data
+                    editAddress(
+                            editAddress.getText().toString(),
+                            editZipcode.getText().toString(),
+                            editCity.getText().toString()
+                    );
+
+                    // Dismiss the dialog after initiating save action
+                    dialog.dismiss();
+                });
+
+                dialog.show(); // Show the dialog
+            }
+        });
         deleteProfileButton.setOnClickListener(v -> {
             // Inside a Fragment
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
@@ -166,7 +199,7 @@ public class Profile extends Fragment {
 
 
 
-    private void editAddress(String firstName, String lastName, String email, String phone, String address, String zipCode, String city) {
+    private void editAddress(String address, String zipCode, String city) {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userEmail = currentUser.getEmail();
@@ -179,10 +212,6 @@ public class Profile extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         // Update user details
                         usersCollection.document(document.getId()).update(
-                                "firstName", firstName,
-                                "lastName", lastName,
-                                "email", email,
-                                "phone", phone,
                                 "address", address,
                                 "zipCode", zipCode,
                                 "city", city
