@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
 
     <!-- Title -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/dialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,13 +18,14 @@
         android:layout_marginBottom="8dp"/>
 
     <!-- Message -->
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/dialogMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Are you sure you want to delete your profile? This action cannot be undone."
         android:textColor="?android:attr/textColorSecondary"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        tools:ignore="HardcodedText" />
 
     <!-- Buttons -->
     <LinearLayout
@@ -33,23 +35,22 @@
         android:gravity="end">
 
         <!-- Cancel Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:textColor="?android:attr/colorAccent"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_marginEnd="8dp"/>
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_marginEnd="8dp"
+            tools:ignore="HardcodedText" />
 
         <!-- Delete Button -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delete"
-            android:textColor="?android:attr/colorAccent"
-            android:background="?android:attr/selectableItemBackground"/>
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
 </LinearLayout>
