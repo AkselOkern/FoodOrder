@@ -85,46 +85,51 @@ public class Profile extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
 
         // Set click listeners
-        editAddressButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                LayoutInflater inflater = requireActivity().getLayoutInflater();
-                View dialogView = inflater.inflate(R.layout.dialog_edit_address, null);
-                builder.setView(dialogView);
-                AlertDialog dialog = builder.create();
+        editAddressButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            LayoutInflater inflater = requireActivity().getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.dialog_edit_address, null);
+            builder.setView(dialogView);
 
-                TextInputEditText editAddress = dialogView.findViewById(R.id.addressEditText);
-                TextInputEditText editZipcode = dialogView.findViewById(R.id.zipcodeEditText);
-                TextInputEditText editCity = dialogView.findViewById(R.id.cityEditText);
+            AlertDialog dialog = builder.create();
 
-                // Set initial values if needed
-                editAddress.setText(addressTextView.getText().toString());
-                editZipcode.setText(zipcodeTextView.getText().toString());
-                editCity.setText(cityTextView.getText().toString());
+            TextInputEditText editAddress = dialogView.findViewById(R.id.addressEditText);
+            TextInputEditText editZipcode = dialogView.findViewById(R.id.zipcodeEditText);
+            TextInputEditText editCity = dialogView.findViewById(R.id.cityEditText);
 
-                Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
-                Button btnSave = dialogView.findViewById(R.id.buttonSave);
+            // Set initial values if needed
+            editAddress.setText(addressTextView.getText().toString());
+            editZipcode.setText(zipcodeTextView.getText().toString());
+            editCity.setText(cityTextView.getText().toString());
 
-                btnCancel.setOnClickListener(cancelView -> {
-                    // Dismiss the dialog when Cancel button is clicked
-                    dialog.dismiss();
-                });
+            Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
+            Button btnSave = dialogView.findViewById(R.id.buttonSave);
 
-                btnSave.setOnClickListener(saveView -> {
-                    // Perform save action here, e.g., update user data
-                    editAddress(
-                            editAddress.getText().toString(),
-                            editZipcode.getText().toString(),
-                            editCity.getText().toString()
-                    );
+            btnCancel.setOnClickListener(cancelView -> {
+                // Dismiss the dialog when Cancel button is clicked
+                dialog.dismiss();
+            });
 
-                    // Dismiss the dialog after initiating save action
-                    dialog.dismiss();
-                });
+            btnSave.setOnClickListener(saveView -> {
+                // Perform save action here, e.g., update user data
+                editAddress(
+                        editAddress.getText().toString(),
+                        editZipcode.getText().toString(),
+                        editCity.getText().toString()
+                );
 
-                dialog.show(); // Show the dialog
-            }
+                // Dismiss the dialog after initiating save action
+                dialog.dismiss();
+
+                // Auto-refresh profile data after updating
+                // Update the TextViews or UI elements displaying the profile data
+                // For example:
+                addressTextView.setText(editAddress.getText().toString());
+                zipcodeTextView.setText(editZipcode.getText().toString());
+                cityTextView.setText(editCity.getText().toString());
+            });
+
+            dialog.show();
         });
         deleteProfileButton.setOnClickListener(v -> {
             // Inside a Fragment
