@@ -123,7 +123,6 @@ public class Profile extends Fragment {
 
                 // Auto-refresh profile data after updating
                 // Update the TextViews or UI elements displaying the profile data
-                // For example:
                 addressTextView.setText(editAddress.getText().toString());
                 zipcodeTextView.setText(editZipcode.getText().toString());
                 cityTextView.setText(editCity.getText().toString());
@@ -222,16 +221,12 @@ public class Profile extends Fragment {
                                 "city", city
                         ).addOnSuccessListener(aVoid -> {
                             // Update successful
-                            // You can add further handling or notifications here
-                            // For example: Toast.makeText(getApplicationContext(), "Details Updated!", Toast.LENGTH_SHORT).show();
                         }).addOnFailureListener(e -> {
-                            // Handle failure
-                            // For example: Log.e(TAG, "Error updating document", e);
+                            Log.e(TAG, "Error updating document", e);
                         });
                     }
                 } else {
-                    // Handle unsuccessful query
-                    // For example: Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             });
         }
