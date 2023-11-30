@@ -206,6 +206,7 @@ public class CartFragment extends Fragment {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
                         String firstName = documentSnapshot.getString("firstName");
+                        String lastname = documentSnapshot.getString("lastname");
                         String phone = documentSnapshot.getString("phone");
                         String address = documentSnapshot.getString("address");
                         String zipcode = documentSnapshot.getString("zipCode");
@@ -214,6 +215,7 @@ public class CartFragment extends Fragment {
                         // Construct order object or map with required details
                         Map<String, Object> orderData = new HashMap<>();
                         orderData.put("firstName", firstName);
+                        orderData.put("lastname", lastname);
                         orderData.put("phone", phone);
                         orderData.put("address", address);
                         orderData.put("zipcode", zipcode);
