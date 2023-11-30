@@ -104,7 +104,7 @@ public class Profile extends Fragment {
                 editCity.setText(cityTextView.getText().toString());
 
                 Button btnCancel = dialogView.findViewById(R.id.buttonCancel);
-                Button btnSave = dialogView.findViewById(R.id.btnSave);
+                Button btnSave = dialogView.findViewById(R.id.buttonSave);
 
                 btnCancel.setOnClickListener(cancelView -> {
                     // Dismiss the dialog when Cancel button is clicked
