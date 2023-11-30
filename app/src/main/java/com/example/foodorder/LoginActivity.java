@@ -10,10 +10,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout emailInputLayout;
     private TextInputLayout passwordInputLayout;
@@ -33,7 +32,7 @@ public class Login extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             // User is already signed in, redirect to the main activity
-            startActivity(new Intent(Login.this, Hovedside.class));
+            startActivity(new Intent(LoginActivity.this, SkeletonActivity.class));
             finish(); // Close the login activity
         }
 
@@ -69,7 +68,7 @@ public class Login extends AppCompatActivity {
                         showSnackbar("Welcome, " + user.getDisplayName());
 
                         // Proceed to your desired activity
-                        Intent intent = new Intent(Login.this, Hovedside.class);
+                        Intent intent = new Intent(LoginActivity.this, SkeletonActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

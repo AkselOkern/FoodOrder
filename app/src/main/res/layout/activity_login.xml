@@ -9,7 +9,7 @@
     android:gravity="center"
     android:padding="16dp"
     android:background="@color/bg_100"
-    tools:context=".Login">
+    tools:context=".LoginActivity">
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"

@@ -21,7 +21,7 @@
             android:value="AIzaSyDiR6M0ByyflLqEoK3hygw7buyZiA6_czc" />
 
         <activity
-            android:name=".Hovedside"
+            android:name=".SkeletonActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -35,7 +35,7 @@
             android:name=".RegistrationActivity"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".LoginActivity"
             android:exported="false" />
 
     </application>

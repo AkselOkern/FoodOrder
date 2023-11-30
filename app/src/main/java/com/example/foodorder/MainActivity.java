@@ -2,11 +2,9 @@ package com.example.foodorder;
 
 import android.content.Intent;
 import android.graphics.PixelFormat;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
             // User is already signed in, redirect to the main activity
-            startActivity(new Intent(MainActivity.this, Hovedside.class));
+            startActivity(new Intent(MainActivity.this, SkeletonActivity.class));
             finish(); // Close the main activity
         }
 
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         // Set click listener for the Log In button
         loginButton.setOnClickListener(v -> {
             // Navigate to the Login Activity
-            Intent intent = new Intent(MainActivity.this, Login.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         });
 

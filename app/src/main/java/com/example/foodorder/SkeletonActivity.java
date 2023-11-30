@@ -1,7 +1,6 @@
 package com.example.foodorder;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -9,23 +8,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Hovedside extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
+public class SkeletonActivity extends AppCompatActivity implements BottomNavigationView.OnItemSelectedListener {
     BottomNavigationView bottomNavigationView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hovedside);
+        setContentView(R.layout.activity_skeleton);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
     }
 
-    Home homeFragment = new Home();
-    Cart cartFragment = new Cart();
-    Profile profileFragment = new Profile();
+    HomeFragment homeFragment = new HomeFragment();
+    CartFragment cartFragment = new CartFragment();
+    ProfileFragment profileFragment = new ProfileFragment();
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

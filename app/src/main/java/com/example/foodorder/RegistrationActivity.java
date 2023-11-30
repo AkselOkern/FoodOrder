@@ -2,11 +2,9 @@ package com.example.foodorder;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -15,9 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -117,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 .addOnSuccessListener(documentReference -> {
                                     // Data added successfully
                                     // Now navigate to the Hovedside activity
-                                    Intent intent = new Intent(RegistrationActivity.this, Hovedside.class);
+                                    Intent intent = new Intent(RegistrationActivity.this, SkeletonActivity.class);
                                     startActivity(intent);
                                     finish(); // Close the current activity
                                 })

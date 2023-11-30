@@ -11,7 +11,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -49,7 +48,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Cart extends Fragment {
+public class CartFragment extends Fragment {
 
     private ArrayList<CartItem> cartItemsList;
     private CartAdapter cartAdapter;
@@ -295,13 +294,13 @@ public class Cart extends Fragment {
     private static class CartAdapter extends ArrayAdapter<CartItem> {
         private final ArrayList<CartItem> cartItemsList;
         private final Context context;
-        private final Cart parentCart; // Reference to the parent Cart class
+        private final CartFragment parentCartFragment; // Reference to the parent Cart class
 
-        public CartAdapter(Context context, ArrayList<CartItem> cartItemsList, Cart parentCart) {
+        public CartAdapter(Context context, ArrayList<CartItem> cartItemsList, CartFragment parentCartFragment) {
             super(context, 0, cartItemsList);
             this.context = context;
             this.cartItemsList = cartItemsList;
-            this.parentCart = parentCart; // Assign the reference to the parent Cart
+            this.parentCartFragment = parentCartFragment; // Assign the reference to the parent Cart
         }
 
 
@@ -333,8 +332,8 @@ public class Cart extends Fragment {
                     notifyDataSetChanged();
                     saveCartItemsToSharedPreferences();
                     // Now, you can access updateTotalPrice() method using the parentCart reference
-                    if (parentCart != null) {
-                        parentCart.updateTotalPrice();
+                    if (parentCartFragment != null) {
+                        parentCartFragment.updateTotalPrice();
                     }
                 });
             }
