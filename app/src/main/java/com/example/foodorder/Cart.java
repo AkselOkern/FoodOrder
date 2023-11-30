@@ -77,14 +77,14 @@ public class Cart extends Fragment {
         FrameLayout mapContainer = view.findViewById(R.id.mapContainer);
 
         btnPickup.setSelected(true); // Set Pickup as default option
-        btnPickup.setTextColor(Color.RED); // Set text color darker for selected button
+        btnPickup.setTextColor(Color.WHITE); // Set text color darker for selected button
 
         btnPickup.setOnClickListener(v -> {
             orderType = "Pickup";
             btnPickup.setSelected(true);
             btnDelivery.setSelected(false);
-            btnPickup.setTextColor(Color.RED);
-            btnDelivery.setTextColor(Color.BLACK);
+            btnPickup.setTextColor(Color.WHITE);
+            btnDelivery.setTextColor(Color.parseColor("#ffadad"));
             updateMap();
         });
 
@@ -92,8 +92,8 @@ public class Cart extends Fragment {
             orderType = "Delivery";
             btnDelivery.setSelected(true);
             btnPickup.setSelected(false);
-            btnDelivery.setTextColor(Color.RED);
-            btnPickup.setTextColor(Color.BLACK);
+            btnDelivery.setTextColor(Color.WHITE);
+            btnPickup.setTextColor(Color.parseColor("#ffadad"));
             updateMap();
         });
 
