@@ -35,9 +35,8 @@
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#000000">
-    </FrameLayout>
+        android:layout_weight="1" />
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -58,6 +57,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewCartTitle"
             android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/textViewTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/listViewCartItems"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Sum: 0.00kr"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnPlaceOrder"

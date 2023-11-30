@@ -1,14 +1,20 @@
 package com.example.foodorder;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +25,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +58,9 @@ public class Cart extends Fragment {
     private FirebaseFirestore db;
     private Button btnPlaceOrder;
     private String orderType = "Pickup"; // Default order type
+    private SupportMapFragment supportMapFragment;
+    private GoogleMap googleMap;
+    private static final int LOCATION_REQUEST_CODE = 100; // Define the location request code
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +72,7 @@ public class Cart extends Fragment {
 
         Button btnPickup = view.findViewById(R.id.btnPickup);
         Button btnDelivery = view.findViewById(R.id.btnDelivery);
+        FrameLayout mapContainer = view.findViewById(R.id.mapContainer);
 
         btnPickup.setSelected(true); // Set Pickup as default option
         btnPickup.setTextColor(Color.RED); // Set text color darker for selected button
@@ -74,9 +93,54 @@ public class Cart extends Fragment {
             btnPickup.setTextColor(Color.BLACK); // Reset text color for unselected button
         });
 
+        // Initialize Map
+        supportMapFragment = SupportMapFragment.newInstance();
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+        fragmentTransaction.add(mapContainer.getId(), supportMapFragment);
+        fragmentTransaction.commit();
+
+        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap map) {
+                googleMap = map;
+                if (orderType.equals("Delivery")) {
+                    // Logic to display user's location for delivery
+                    // Check and request location permissions if not granted already
+                    // Initialize FusedLocationProviderClient
+                    FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+
+                    // Check if location permissions are granted
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        // Get the last known location of the user
+                        fusedLocationClient.getLastLocation()
+                                .addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                                    @Override
+                                    public void onSuccess(Location location) {
+                                        if (location != null) {
+                                            // Display user's current location on the map
+                                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                            googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                                        }
+                                    }
+                                });
+                    } else {
+                        // Request location permissions if not granted
+                        ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+                    }
+                } else if (orderType.equals("Pickup")) {
+                    // Logic to set a specific coordinate for pickup
+                    LatLng pickupCoordinate = new LatLng(60.1673, 10.2461);
+                    googleMap.addMarker(new MarkerOptions().position(pickupCoordinate).title("Pickup Location"));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoordinate, 15));
+                }
+            }
+        });
+
         TextView textViewCartTitle = view.findViewById(R.id.textViewCartTitle);
         ListView listViewCartItems = view.findViewById(R.id.listViewCartItems);
         btnPlaceOrder = view.findViewById(R.id.btnPlaceOrder);
+        TextView textViewTotalPrice = view.findViewById(R.id.textViewTotalPrice);
 
         cartItemsList = getCartItemsFromSharedPreferences();
         if (cartItemsList == null) {
@@ -93,8 +157,13 @@ public class Cart extends Fragment {
             }
         });
 
+        // Calculate total price after initializing cartItemsList
+        double totalPrice = calculateTotalPrice(cartItemsList);
+        textViewTotalPrice.setText(String.format("Sum: %.2fkr", totalPrice));
+
         return view;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -198,6 +267,13 @@ public class Cart extends Fragment {
             cartItemsList.clear();
         }
     }
+    private double calculateTotalPrice(ArrayList<CartItem> cartItemsList) {
+        double total = 0.0;
+        for (CartItem cartItem : cartItemsList) {
+            total += cartItem.getItemPrice();
+        }
+        return total;
+    }
 
     private static class CartAdapter extends ArrayAdapter<CartItem> {
 
@@ -252,3 +328,4 @@ public class Cart extends Fragment {
         }
     }
 }
+
