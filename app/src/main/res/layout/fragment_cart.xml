@@ -58,17 +58,6 @@
             android:layout_below="@id/textViewCartTitle"
             android:layout_marginTop="8dp" />
 
-        <TextView
-            android:id="@+id/textViewTotalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/listViewCartItems"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="Sum: 0.00kr"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
         <Button
             android:id="@+id/btnPlaceOrder"
             android:layout_width="wrap_content"
@@ -76,7 +65,20 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
-            android:text="Place Order" />
+            android:text="Place Order"
+            android:background="@drawable/button_background" /> <!-- Replace @drawable/button_background with your button style -->
+
+        <TextView
+            android:id="@+id/textViewTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btnPlaceOrder"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:text="Sum: 0.00kr"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:background="#FFFFFF" />
     </RelativeLayout>
 
 </LinearLayout>
