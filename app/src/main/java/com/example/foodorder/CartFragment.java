@@ -33,6 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -126,7 +127,8 @@ public class CartFragment extends Fragment {
             if (!cartItemsList.isEmpty()) {
                 placeOrder();
             } else {
-                Toast.makeText(getContext(), "Your cart is empty!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "Your cart is empty!", Toast.LENGTH_SHORT).show();
+                Snackbar.make(view, "Your cart is empty!", Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -177,7 +179,7 @@ public class CartFragment extends Fragment {
                             if (location != null) {
                                 LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
                                 googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15));
+                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
                             }
                         }
                     });
@@ -188,7 +190,7 @@ public class CartFragment extends Fragment {
                 // Logic to set a specific coordinate for pickup
                 LatLng pickupCoordinate = new LatLng(60.1649342, 10.2548346);
                 googleMap.addMarker(new MarkerOptions().position(pickupCoordinate).title("Luigi's pizzeria"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoordinate, 15));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoordinate, 17));
             }
         }
     }
@@ -250,17 +252,20 @@ public class CartFragment extends Fragment {
                                     // Handle successful order placement
                                     clearCartItems();
                                     cartAdapter.notifyDataSetChanged();
-                                    Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(getView(), "Order Placed Successfully!", Snackbar.LENGTH_SHORT).show();
                                     textViewTotalPrice.setText(String.format("Sum: %.2fkr", 0.0));
                                 })
                                 .addOnFailureListener(e -> {
                                     // Handle order placement failure
-                                    Toast.makeText(getContext(), "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getContext(), "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
+                                    Snackbar.make(getView(), "Failed to place order. Please try again.", Snackbar.LENGTH_SHORT).show();
                                 });
                     }
                 } else {
                     // Handle errors while fetching user data
-                    Toast.makeText(getContext(), "Failed to retrieve user data. Please try again.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "Failed to retrieve user data. Please try again.", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Failed to retrieve user data. Please try again.", Snackbar.LENGTH_SHORT).show();
                 }
             });
         }
