@@ -18,7 +18,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout emailInputLayout;
     private TextInputLayout passwordInputLayout;
-    private Button loginButton;
 
     private FirebaseAuth auth;
 
@@ -41,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         // Initialize UI elements
         emailInputLayout = findViewById(R.id.emailInputLayout);
         passwordInputLayout = findViewById(R.id.passwordInputLayout);
-        loginButton = findViewById(R.id.loginButton);
+        Button loginButton = findViewById(R.id.loginButton);
 
         // Set click listener for the Login button
         loginButton.setOnClickListener(v -> loginUser());
