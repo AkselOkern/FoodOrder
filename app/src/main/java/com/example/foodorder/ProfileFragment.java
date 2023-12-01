@@ -2,7 +2,9 @@ package com.example.foodorder;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -267,6 +269,10 @@ public class ProfileFragment extends Fragment {
     }
 
     private void logout() {
+        // Clear the cart when the user logs out
+        clearCart();
+
+        // Sign out from Firebase Authentication
         firebaseAuth.signOut();
 
         // Navigate back to MainActivity
@@ -275,5 +281,14 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
         requireActivity().finish(); // Finish the current activity
     }
+
+    private void clearCart() {
+        // Clear cart items from SharedPreferences
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("cartItems");
+        editor.apply();
+    }
+
 }
 
