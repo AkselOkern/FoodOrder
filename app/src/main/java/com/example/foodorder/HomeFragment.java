@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,7 +151,8 @@ public class HomeFragment extends Fragment {
         public void onBindViewHolder(@NonNull PizzaViewHolder holder, int position) {
             // Set the data for each pizza card
             Pizza pizza = pizzaList.get(position);
-            holder.setPizzaData(pizza);
+            String selectedSize = "Small"; // Set a default size or obtain the selected size from somewhere
+            holder.setPizzaData(pizza, selectedSize);
         }
 
         @SuppressLint("NotifyDataSetChanged")
@@ -251,35 +255,40 @@ public class HomeFragment extends Fragment {
         }
 
         @SuppressLint("DefaultLocale")
-        public void setPizzaData(Pizza pizza) {
+        public void setPizzaData(Pizza pizza, String size) {
             // Set the data for each pizza card
-            Glide.with(itemView.getContext()) // Load the pizza image
-                    .load(pizza.getImagePath()) // Load the pizza image
-                    .placeholder(R.drawable.placeholder_image_loading) // Set a placeholder while loading
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image
-                    .into(imageViewPizza); // Set the image to the ImageView
+            Glide.with(itemView.getContext())
+                    .load(pizza.getImagePath())
+                    .placeholder(R.drawable.placeholder_image_loading)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imageViewPizza);
 
             textViewItemName.setText(pizza.getItemName()); // Set the pizza name
-            textViewPrice.setText(String.format("Price: NOK%.2f", pizza.getPrice())); // Format the price to 2 decimal places
 
             ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(
-                    // Set the pizza size dropdown
                     itemView.getContext(),
                     R.array.pizza_sizes,
                     android.R.layout.simple_dropdown_item_1line
             );
             spinnerPizzaSize.setAdapter(sizeAdapter);
 
-            int sizePosition = Arrays.asList(itemView.getResources().getStringArray(R.array.pizza_sizes)).indexOf(pizza.getSize());
+            int sizePosition = Arrays.asList(itemView.getResources().getStringArray(R.array.pizza_sizes)).indexOf(size);
 
             // Set the default selection to the first item if not found
             if (sizePosition == -1 && sizeAdapter.getCount() > 0) {
-                // Set the default selection to the first item if not found
                 spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(0)).toString(), false);
             } else if (sizePosition != -1) {
-                // Set the default selection to the pizza size if found
-                spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(sizePosition)).toString(), false); // Set initial selection without triggering listener
+                spinnerPizzaSize.setText(Objects.requireNonNull(sizeAdapter.getItem(sizePosition)).toString(), false);
             }
+
+            // Add a listener to the size dropdown
+            spinnerPizzaSize.setOnItemClickListener((parent, view, position, id) -> {
+                String selectedSize = parent.getItemAtPosition(position).toString();
+                double adjustedPrice = calculateAdjustedPrice(pizza.getPrice(), selectedSize); // Recalculate the adjusted price
+                String priceText = String.format("Price: NOK%.2f", adjustedPrice);
+                textViewPrice.setText(priceText); // Update the displayed price
+            });
+
 
             final int[] quantity = {1};
             textViewQuantity.setText(String.valueOf(quantity[0]));
@@ -299,7 +308,24 @@ public class HomeFragment extends Fragment {
             });
 
             btnAddToCart.setOnClickListener(v -> addToCart(pizza, quantity[0], spinnerPizzaSize.getText().toString(), pizza.getPrice())); // Add the pizza to cart
+
+            double adjustedPrice = calculateAdjustedPrice(pizza.getPrice(), size); // Calculate the adjusted price
+            String priceText = String.format("Price: NOK%.2f", adjustedPrice);
+            textViewPrice.setText(priceText);
         }
+
+        private double calculateAdjustedPrice(double basePrice, String size) {
+            double priceMultiplier;
+            if (size.equals("Medium")) {
+                priceMultiplier = 1.5; // Set the price multiplier for Medium size
+            } else if (size.equals("Large")) {
+                priceMultiplier = 2.5; // Set the price multiplier for Large size
+            } else {
+                priceMultiplier = 1.0; // Default multiplier for Small size
+            }
+            return basePrice * priceMultiplier; // Calculate the adjusted price
+        }
+
         private void addToCart(Pizza pizza, int quantity, String size, double price) {
             // Create or access SharedPreferences
             SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("CartPreferences", Context.MODE_PRIVATE);
