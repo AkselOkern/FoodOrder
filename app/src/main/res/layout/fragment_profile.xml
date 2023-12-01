@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,68 +16,232 @@
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            android:contentDescription="First Name Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
         android:id="@+id/firstNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="16dp"
-        android:text="First Name" />
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:text="First Name"
+        android:textSize="18sp" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/lastNameTextView"
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Last Name"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/emailTextView"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_person"
+            android:contentDescription="Last Name Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lastNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="Last Name" />
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Email"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/phoneTextView"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_email"
+            android:contentDescription="Email Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/emailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="Email" />
+
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Phone"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/addressTextView"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_phone"
+            android:contentDescription="Phone Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/phoneTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="Phone" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Address"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/zipcodeTextView"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_address"
+            android:contentDescription="Address Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/addressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="Address" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Zipcode"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/cityTextView"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_zipcode"
+            android:contentDescription="Zipcode Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/zipcodeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="Zipcode" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="City"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_city"
+            android:contentDescription="City Icon"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/cityTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:drawablePadding="8dp"
+            android:text="City" />
+
+    </LinearLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+
+    <!-- Edit Address Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editAddressButton"
         android:layout_width="match_parent"
@@ -84,6 +249,7 @@
         android:layout_marginTop="16dp"
         android:text="Edit Address" />
 
+    <!-- Delete Profile Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteProfileButton"
         android:layout_width="match_parent"
@@ -91,12 +257,11 @@
         android:layout_marginTop="8dp"
         android:text="Delete Profile" />
 
+    <!-- Logout Button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/logoutButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Logout">
-    </com.google.android.material.button.MaterialButton>
-
+        android:text="Logout" />
 </LinearLayout>
