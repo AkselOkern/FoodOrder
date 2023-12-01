@@ -83,6 +83,7 @@ public class CartFragment extends Fragment {
         btnPickup.setTextColor(Color.WHITE); // Set text color darker for selected button
 
         btnPickup.setOnClickListener(v -> {
+            // Set order type to Pickup
             orderType = "Pickup";
             btnPickup.setSelected(true);
             btnDelivery.setSelected(false);
@@ -92,6 +93,7 @@ public class CartFragment extends Fragment {
         });
 
         btnDelivery.setOnClickListener(v -> {
+            // Set order type to Delivery
             orderType = "Delivery";
             btnDelivery.setSelected(true);
             btnPickup.setSelected(false);
@@ -101,12 +103,13 @@ public class CartFragment extends Fragment {
         });
 
         // Initialize Map
-        supportMapFragment = SupportMapFragment.newInstance();
-        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-        fragmentTransaction.add(mapContainer.getId(), supportMapFragment);
-        fragmentTransaction.commit();
+        supportMapFragment = SupportMapFragment.newInstance(); // Create a new instance of SupportMapFragment
+        FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction(); // Get FragmentManager and start a transaction
+        fragmentTransaction.add(mapContainer.getId(), supportMapFragment); // Add the fragment to the 'mapContainer' FrameLayout
+        fragmentTransaction.commit(); // Commit the transaction
 
         supportMapFragment.getMapAsync(map -> {
+            // Get the GoogleMap object from the fragment
             googleMap = map;
             updateMap();
         });
@@ -117,6 +120,7 @@ public class CartFragment extends Fragment {
 
         cartItemsList = getCartItemsFromSharedPreferences();
         if (cartItemsList == null) {
+            // Initialize cartItemsList if it is null
             cartItemsList = new ArrayList<>();
         }
         cartAdapter = new CartAdapter(getContext(), cartItemsList, this);
@@ -124,10 +128,12 @@ public class CartFragment extends Fragment {
         listViewCartItems.setAdapter(cartAdapter);
 
         btnPlaceOrder.setOnClickListener(v -> {
+            // Check if cart is empty
             if (!cartItemsList.isEmpty()) {
+                // Place order
                 placeOrder();
             } else {
-                //Toast.makeText(getContext(), "Your cart is empty!", Toast.LENGTH_SHORT).show();
+                // Handle empty cart
                 Snackbar.make(view, "Your cart is empty!", Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -143,6 +149,7 @@ public class CartFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     private void updateTotalPrice() {
         double totalPrice = calculateTotalPrice(cartItemsList);
+        // Update total price
         if (textViewTotalPrice != null) {
             textViewTotalPrice.setText(String.format("Sum: %.2fkr", totalPrice));
         }
@@ -151,21 +158,20 @@ public class CartFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // Update place order button state
         super.onViewCreated(view, savedInstanceState);
         updatePlaceOrderButtonState();
     }
 
     private void updatePlaceOrderButtonState() {
+        // Enable place order button if cart is not empty
         if (btnPlaceOrder != null) {
-            if (cartItemsList != null && !cartItemsList.isEmpty()) {
-                btnPlaceOrder.setEnabled(true);
-            } else {
-                btnPlaceOrder.setEnabled(false);
-            }
+            btnPlaceOrder.setEnabled(cartItemsList != null && !cartItemsList.isEmpty());
         }
     }
 
     private void updateMap() {
+        // Update map based on order type
         if (googleMap != null) {
             googleMap.clear(); // Clear previous markers
 
@@ -173,18 +179,17 @@ public class CartFragment extends Fragment {
                 // Logic to display user's location for delivery
                 FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
 
+                // Check if location permission is granted
                 if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
-                                googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
-                                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
-                            }
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            LatLng userLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                            googleMap.addMarker(new MarkerOptions().position(userLocation).title("Your Location"));
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
                         }
                     });
                 } else {
+                    // Request location permission
                     ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
                 }
             } else if (orderType.equals("Pickup")) {
@@ -200,6 +205,7 @@ public class CartFragment extends Fragment {
     @SuppressLint("DefaultLocale")
     private void placeOrder() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        // Check if user is logged in
         if (currentUser != null) {
             // Retrieve user details from Firebase users collection
             String userEmail = currentUser.getEmail();
@@ -232,6 +238,7 @@ public class CartFragment extends Fragment {
                         ArrayList<Map<String, Object>> cartItemsData = new ArrayList<>();
                         double totalPrice = 0.0; // Initialize total price
                         for (CartItem cartItem : cartItemsList) {
+                            // Construct cart item object or map with required details
                             Map<String, Object> itemData = new HashMap<>();
                             itemData.put("itemName", cartItem.getItemName());
                             itemData.put("size", cartItem.getSize());
@@ -255,18 +262,16 @@ public class CartFragment extends Fragment {
                                     clearCartItems();
                                     cartAdapter.notifyDataSetChanged();
                                     //Toast.makeText(getContext(), "Order Placed Successfully!", Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(getView(), "Order Placed Successfully!", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(requireView(), "Order Placed Successfully!", Snackbar.LENGTH_SHORT).show();
                                     textViewTotalPrice.setText(String.format("Sum: %.2fkr", 0.0));
                                 })
                                 .addOnFailureListener(e -> {
                                     // Handle order placement failure
-                                    //Toast.makeText(getContext(), "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
                                     Snackbar.make(requireView(), "Failed to place order. Please try again.", Snackbar.LENGTH_SHORT).show();
                                 });
                     }
                 } else {
                     // Handle errors while fetching user data
-                    //Toast.makeText(getContext(), "Failed to retrieve user data. Please try again.", Toast.LENGTH_SHORT).show();
                     Snackbar.make(requireView(), "Failed to retrieve user data. Please try again.", Snackbar.LENGTH_SHORT).show();
                 }
             });
@@ -276,14 +281,16 @@ public class CartFragment extends Fragment {
 
     // Method to retrieve cart items from SharedPreferences
     private ArrayList<CartItem> getCartItemsFromSharedPreferences() {
+        // Retrieve cart items from SharedPreferences
         Gson gson = new Gson();
-        String json = sharedPreferences.getString("cartItems", "");
+        String json = sharedPreferences.getString("cartItems", ""); // Retrieve cart items from SharedPreferences
         Type type = new TypeToken<ArrayList<CartItem>>() {
         }.getType();
         return gson.fromJson(json, type);
     }
 
     private void clearCartItems() {
+        // Clear cart items from SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("cartItems");
         editor.apply();
@@ -293,6 +300,7 @@ public class CartFragment extends Fragment {
     }
 
     private double calculateTotalPrice(ArrayList<CartItem> cartItemsList) {
+        // Calculate total price of cart items
         double total = 0.0;
         for (CartItem cartItem : cartItemsList) {
             total += cartItem.getItemPrice();
@@ -313,15 +321,18 @@ public class CartFragment extends Fragment {
         }
 
 
+        @SuppressLint("SetTextI18n")
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            // Get the data item for this position
             View listItem = convertView;
             if (listItem == null) {
                 listItem = LayoutInflater.from(context).inflate(R.layout.cart_list_item, parent, false);
             }
 
             if (cartItemsList != null && !cartItemsList.isEmpty() && position < cartItemsList.size()) {
+                // Get the CartItem object for this position
                 CartItem currentItem = cartItemsList.get(position);
 
                 // Set the data to your list item layout elements (e.g., TextViews)
@@ -351,11 +362,12 @@ public class CartFragment extends Fragment {
         }
 
         private void saveCartItemsToSharedPreferences() {
-            SharedPreferences.Editor editor = context.getSharedPreferences("CartPreferences", Context.MODE_PRIVATE).edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(cartItemsList);
-            editor.putString("cartItems", json);
-            editor.apply();
+            // Save cart items to SharedPreferences
+            SharedPreferences.Editor editor = context.getSharedPreferences("CartPreferences", Context.MODE_PRIVATE).edit(); // Get SharedPreferences editor
+            Gson gson = new Gson(); // Create Gson object
+            String json = gson.toJson(cartItemsList); // Convert cart items to JSON
+            editor.putString("cartItems", json); // Save cart items to SharedPreferences
+            editor.apply(); // Apply changes
         }
     }
 }
