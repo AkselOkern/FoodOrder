@@ -2,6 +2,7 @@ package com.example.foodorder;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -245,6 +246,9 @@ public class ProfileFragment extends Fragment {
                 if (task.isSuccessful()) {
                     firebaseAuth.signOut();
                     // Navigate back to MainActivity
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear back stack
+                    startActivity(intent);
                     requireActivity().finish();
                     // Account deleted successfully
                 } else {
@@ -255,10 +259,14 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void logout () {
-            firebaseAuth.signOut();
-            // Navigate back to MainActivity
-            requireActivity().finish();
-        }
+    private void logout() {
+        firebaseAuth.signOut();
+
+        // Navigate back to MainActivity
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear back stack
+        startActivity(intent);
+        requireActivity().finish(); // Finish the current activity
+    }
 }
 
