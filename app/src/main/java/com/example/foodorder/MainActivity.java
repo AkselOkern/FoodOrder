@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private Button registerButton;
     private VideoView videoView;
     private Uri videoUri;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,17 @@ public class MainActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
         videoView = findViewById(R.id.backgroundVideo);
+
+
+        auth = FirebaseAuth.getInstance();
+
+        // Check if the user is already signed in
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already signed in, redirect to the main activity
+            startActivity(new Intent(MainActivity.this, SkeletonActivity.class));
+            finish(); // Close the main activity
+        }
 
         String videoUrl = "https://cdn.lystad.io/foodorder/pizza_home.mp4";
         videoUri = Uri.parse(videoUrl);

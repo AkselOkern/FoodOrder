@@ -1,6 +1,7 @@
 package com.example.foodorder;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -48,6 +49,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CartFragment extends Fragment {
 
@@ -63,6 +65,7 @@ public class CartFragment extends Fragment {
     private TextView textViewTotalPrice;
     private static final int LOCATION_REQUEST_CODE = 100; // Define the location request code
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
@@ -103,12 +106,9 @@ public class CartFragment extends Fragment {
         fragmentTransaction.add(mapContainer.getId(), supportMapFragment);
         fragmentTransaction.commit();
 
-        supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(@NonNull GoogleMap map) {
-                googleMap = map;
-                updateMap();
-            }
+        supportMapFragment.getMapAsync(map -> {
+            googleMap = map;
+            updateMap();
         });
 
         TextView textViewCartTitle = view.findViewById(R.id.textViewCartTitle);
@@ -140,6 +140,7 @@ public class CartFragment extends Fragment {
     }
 
 
+    @SuppressLint("DefaultLocale")
     private void updateTotalPrice() {
         double totalPrice = calculateTotalPrice(cartItemsList);
         if (textViewTotalPrice != null) {
@@ -196,6 +197,7 @@ public class CartFragment extends Fragment {
     }
 
     // Method to place an order
+    @SuppressLint("DefaultLocale")
     private void placeOrder() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
@@ -259,13 +261,13 @@ public class CartFragment extends Fragment {
                                 .addOnFailureListener(e -> {
                                     // Handle order placement failure
                                     //Toast.makeText(getContext(), "Failed to place order. Please try again.", Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(getView(), "Failed to place order. Please try again.", Snackbar.LENGTH_SHORT).show();
+                                    Snackbar.make(requireView(), "Failed to place order. Please try again.", Snackbar.LENGTH_SHORT).show();
                                 });
                     }
                 } else {
                     // Handle errors while fetching user data
                     //Toast.makeText(getContext(), "Failed to retrieve user data. Please try again.", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(getView(), "Failed to retrieve user data. Please try again.", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), "Failed to retrieve user data. Please try again.", Snackbar.LENGTH_SHORT).show();
                 }
             });
         }
