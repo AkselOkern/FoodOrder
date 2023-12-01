@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // Start or restart the video when MainActivity is resumed
         startVideo();
     }

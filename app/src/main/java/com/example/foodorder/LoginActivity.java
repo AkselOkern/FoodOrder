@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextInputLayout emailInputLayout;
@@ -42,17 +44,13 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
 
         // Set click listener for the Login button
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loginUser();
-            }
-        });
+        loginButton.setOnClickListener(v -> loginUser());
     }
 
     private void loginUser() {
-        String email = emailInputLayout.getEditText().getText().toString();
-        String password = passwordInputLayout.getEditText().getText().toString();
+        // Get the email and password from the input fields
+        String email = Objects.requireNonNull(emailInputLayout.getEditText()).getText().toString();
+        String password = Objects.requireNonNull(passwordInputLayout.getEditText()).getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             showSnackbar("Please fill in all the entries");
@@ -61,20 +59,22 @@ public class LoginActivity extends AppCompatActivity {
 
         // Sign in with Firebase Authentication
         auth.signInWithEmailAndPassword(email, password)
+                // Add a listener to handle the result of the login attempt
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         // Login successful
                         FirebaseUser user = auth.getCurrentUser();
+                        assert user != null;
                         showSnackbar("Welcome, " + user.getDisplayName());
 
-                        // Proceed to your desired activity
+                        // Redirect to the main activity
                         Intent intent = new Intent(LoginActivity.this, SkeletonActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        // Login failed, show appropriate message
+                        // Login failed
                         try {
-                            throw task.getException();
+                            throw Objects.requireNonNull(task.getException());
                         } catch (FirebaseAuthException e) {
                             String errorCode = e.getErrorCode();
                             if ("ERROR_WRONG_PASSWORD".equals(errorCode)) {
@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showSnackbar(String message) {
+        // Show a snackbar with the given message
         View view = findViewById(android.R.id.content); // Use the root view of your activity
         Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
         snackbar.show();
