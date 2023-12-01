@@ -16,43 +16,21 @@ public class MainActivity extends AppCompatActivity {
 
     private Button loginButton;
     private Button registerButton;
-
-    private FirebaseAuth auth;
+    private VideoView videoView;
+    private Uri videoUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize Firebase Authentication
-        auth = FirebaseAuth.getInstance();
-
-        // Check if the user is already signed in
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if (currentUser != null) {
-            // User is already signed in, redirect to the main activity
-            startActivity(new Intent(MainActivity.this, SkeletonActivity.class));
-            finish(); // Close the main activity
-        }
-
         // Initialize UI elements
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        VideoView videoView = findViewById(R.id.backgroundVideo);
+        videoView = findViewById(R.id.backgroundVideo);
 
         String videoUrl = "https://cdn.lystad.io/foodorder/pizza_home.mp4";
-        Uri uri = Uri.parse(videoUrl);
-
-        videoView.setVideoURI(uri);
-        videoView.setZOrderOnTop(false);
-        videoView.getHolder().setFormat(PixelFormat.OPAQUE);
-
-        videoView.start();
-
-        videoView.setOnCompletionListener(mediaPlayer -> {
-            // Restart the video
-            videoView.start();
-        });
+        videoUri = Uri.parse(videoUrl);
 
         // Set click listener for the Log In button
         loginButton.setOnClickListener(v -> {
@@ -67,5 +45,28 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Start or restart the video when MainActivity is resumed
+        startVideo();
+    }
+
+    private void startVideo() {
+        if (videoUri != null) {
+            videoView.setVideoURI(videoUri);
+            videoView.setZOrderOnTop(false);
+            videoView.getHolder().setFormat(PixelFormat.OPAQUE);
+
+            videoView.start();
+
+            videoView.setOnCompletionListener(mediaPlayer -> {
+                // Restart the video
+                videoView.start();
+            });
+        }
     }
 }
