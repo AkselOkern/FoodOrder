@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -47,24 +48,19 @@ public class RegistrationActivity extends AppCompatActivity {
         registerButton = findViewById(R.id.registerButton);
 
         // Set click listener for the Register button
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        registerButton.setOnClickListener(v -> registerUser());
     }
 
     private void registerUser() {
         // Get user input
-        String firstName = firstNameEditText.getText().toString();
-        String lastName = lastNameEditText.getText().toString();
-        String email = emailEditText.getText().toString();
-        String phone = phoneEditText.getText().toString();
-        String address = addressEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        String zipCode = zipCodeEditText.getText().toString();
-        String city = cityEditText.getText().toString();
+        String firstName = Objects.requireNonNull(firstNameEditText.getText()).toString();
+        String lastName = Objects.requireNonNull(lastNameEditText.getText()).toString();
+        String email = Objects.requireNonNull(emailEditText.getText()).toString();
+        String phone = Objects.requireNonNull(phoneEditText.getText()).toString();
+        String address = Objects.requireNonNull(addressEditText.getText()).toString();
+        String password = Objects.requireNonNull(passwordEditText.getText()).toString();
+        String zipCode = Objects.requireNonNull(zipCodeEditText.getText()).toString();
+        String city = Objects.requireNonNull(cityEditText.getText()).toString();
 
         // Check if any field is blank
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || password.isEmpty() || zipCode.isEmpty() || city.isEmpty()) {

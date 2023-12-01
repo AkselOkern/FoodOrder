@@ -19,7 +19,6 @@ public class SkeletonActivity extends AppCompatActivity implements BottomNavigat
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setOnItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-
     }
 
     HomeFragment homeFragment = new HomeFragment();
@@ -28,7 +27,7 @@ public class SkeletonActivity extends AppCompatActivity implements BottomNavigat
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //Log.d("Hovedside", "onNavigationItemSelected: " + item.getItemId());
+        // Handle navigation view item clicks here.
         if (item.getItemId() == R.id.navigation_home) {
             getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, homeFragment).commit();
             return true;
