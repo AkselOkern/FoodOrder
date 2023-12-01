@@ -28,6 +28,8 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Objects;
+
 public class ProfileFragment extends Fragment {
     private TextView firstNameTextView, lastNameTextView, emailTextView, phoneTextView, addressTextView, zipcodeTextView, cityTextView;
     private Button editAddressButton, deleteProfileButton, logoutButton;
@@ -46,7 +48,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        return inflater.inflate(R.layout.fragment_profile, container, false); // Inflate the layout for this fragment
     }
 
     @Override
@@ -99,9 +101,9 @@ public class ProfileFragment extends Fragment {
             btnSave.setOnClickListener(saveView -> {
                 // Perform save action here, e.g., update user data
                 editAddress(
-                        editAddress.getText().toString(),
-                        editZipcode.getText().toString(),
-                        editCity.getText().toString()
+                        Objects.requireNonNull(editAddress.getText()).toString(),
+                        Objects.requireNonNull(editZipcode.getText()).toString(),
+                        Objects.requireNonNull(editCity.getText()).toString()
                 );
 
                 // Dismiss the dialog after initiating save action
@@ -117,6 +119,7 @@ public class ProfileFragment extends Fragment {
             dialog.show();
         });
         deleteProfileButton.setOnClickListener(v -> {
+            // Show confirmation dialog before deleting the profile
             // Inside a Fragment
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -156,6 +159,7 @@ public class ProfileFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             String userEmail = currentUser.getEmail();
+            // Retrieve user data from Firestore
 
             CollectionReference usersCollection = db.collection("users");
             Query query = usersCollection.whereEqualTo("email", userEmail);
@@ -163,6 +167,7 @@ public class ProfileFragment extends Fragment {
             query.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                        // Retrieve user data
                         String firstName = documentSnapshot.getString("firstName");
                         String lastName = documentSnapshot.getString("lastName");
                         String email = documentSnapshot.getString("email");
@@ -181,7 +186,7 @@ public class ProfileFragment extends Fragment {
                         cityTextView.setText(city);
                     }
                 } else {
-                    // Handle errors
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             });
         }
@@ -190,13 +195,16 @@ public class ProfileFragment extends Fragment {
 
 
     private void editAddress(String address, String zipCode, String city) {
+        // Update user data in Firestore
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
+            // User is logged in, proceed with updating
             String userEmail = currentUser.getEmail();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             CollectionReference usersCollection = db.collection("users");
 
             Query query = usersCollection.whereEqualTo("email", userEmail);
+            // Query query = usersCollection.whereEqualTo("email", userEmail).limit(1);
             query.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
@@ -237,7 +245,7 @@ public class ProfileFragment extends Fragment {
                         document.getReference().delete();
                     }
                 } else {
-                    // Handle unsuccessful Firestore query
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             });
 
@@ -252,8 +260,7 @@ public class ProfileFragment extends Fragment {
                     requireActivity().finish();
                     // Account deleted successfully
                 } else {
-                    // Handle unsuccessful user deletion from Authentication
-
+                    Log.e(TAG, "Error deleting account", task.getException());
                 }
             });
         }
