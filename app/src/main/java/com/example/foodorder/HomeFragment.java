@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment {
         MaterialAutoCompleteTextView spinnerFilterOptions = textInputLayout.findViewById(R.id.spinnerFilterOptions);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                // Create an ArrayAdapter using the string array and a default spinner layout
                 requireContext(),
                 R.array.filter_options,
                 android.R.layout.simple_dropdown_item_1line
@@ -81,10 +82,12 @@ public class HomeFragment extends Fragment {
         pizzaCollection.orderBy("itemName").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 pizzaList.clear();
+                // Add each pizza item to the pizzaList
                 for (DocumentSnapshot document : task.getResult()) {
                     Pizza pizza = document.toObject(Pizza.class);
                     pizzaList.add(pizza);
                 }
+                // Update the pizzaList with the new data
                 pizzaAdapter.setFullPizzaList(pizzaList); // Update the full pizza list
                 pizzaAdapter.notifyDataSetChanged();
                 Log.d(TAG, "Pizza List Size: " + pizzaList.size());
@@ -179,17 +182,17 @@ public class HomeFragment extends Fragment {
         @Override
         public int getItemCount() {
             return pizzaList.size();
-        }
+        } // Return the size of the pizzaList
 
         @NonNull
         @Override
         public Filter getFilter() {
             // Filter the pizzaList based on the search query
+            // This method is called whenever the user types in the search bar
             return new Filter() {
                 @Override
                 protected FilterResults performFiltering(CharSequence constraint) {
                     List<Pizza> filteredList = new ArrayList<>();
-
                     if (constraint == null || constraint.length() == 0) {
                         // If the search query is empty, show all items
                         filteredList.addAll(pizzaListFull);
@@ -215,8 +218,8 @@ public class HomeFragment extends Fragment {
                 protected void publishResults(CharSequence constraint, FilterResults results) {
                     // Update the pizzaList with the filtered results
                     pizzaList.clear();
-                    pizzaList.addAll((List<Pizza>) results.values);
-                    notifyDataSetChanged();
+                    pizzaList.addAll((List<Pizza>) results.values); // Update the pizzaList with the filtered results
+                    notifyDataSetChanged(); // Notify the adapter that the data has changed
                     Log.d(TAG, "Filtered Pizza List Size: " + pizzaList.size());
                 }
             };
@@ -258,19 +261,20 @@ public class HomeFragment extends Fragment {
         public void setPizzaData(Pizza pizza, String size) {
             // Set the data for each pizza card
             Glide.with(itemView.getContext())
-                    .load(pizza.getImagePath())
-                    .placeholder(R.drawable.placeholder_image_loading)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imageViewPizza);
+                    .load(pizza.getImagePath()) // Set the pizza image
+                    .placeholder(R.drawable.placeholder_image_loading) // Set a placeholder image while the pizza image is loading
+                    .diskCacheStrategy(DiskCacheStrategy.ALL) // Cache the image
+                    .into(imageViewPizza); // Set the pizza image
 
             textViewItemName.setText(pizza.getItemName()); // Set the pizza name
 
             ArrayAdapter<CharSequence> sizeAdapter = ArrayAdapter.createFromResource(
+                    // Create an ArrayAdapter using the string array and a default spinner layout
                     itemView.getContext(),
                     R.array.pizza_sizes,
                     android.R.layout.simple_dropdown_item_1line
             );
-            spinnerPizzaSize.setAdapter(sizeAdapter);
+            spinnerPizzaSize.setAdapter(sizeAdapter); // Set the adapter for the size dropdown
 
             int sizePosition = Arrays.asList(itemView.getResources().getStringArray(R.array.pizza_sizes)).indexOf(size);
 
@@ -315,6 +319,7 @@ public class HomeFragment extends Fragment {
         }
 
         private double calculateAdjustedPrice(double basePrice, String size) {
+            // Calculate the adjusted price based on the pizza size
             double priceMultiplier;
             if (size.equals("Medium")) {
                 priceMultiplier = 1.5; // Set the price multiplier for Medium size
